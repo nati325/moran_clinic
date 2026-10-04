@@ -1,0 +1,342 @@
+/* מורן מדר — mobile-first. מטרה אחת: וואטסאפ. */
+
+:root {
+  --bg: #f5efe7;
+  --card: #ffffff;
+  --ink: #1c1410;
+  --muted: #6a5b51;
+  --line: #e7dccf;
+  --clay: #9c5536;
+  --sand: #e9dccb;
+  --cream: #f3e9dc;
+  --cream-dim: #cdbcaa;
+  --wa: #1e7f51;
+  --wa-dark: #166340;
+  --focus: #1b5fb3;
+  --pad: 18px;
+  --r: 22px;
+  --sans: 'Heebo', 'Segoe UI', Arial, sans-serif;
+  --mark: 'Cinzel', 'Times New Roman', serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 400 1rem/1.6 var(--sans);
+  padding-bottom: calc(84px + env(safe-area-inset-bottom));
+  -webkit-tap-highlight-color: transparent;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+h1, h2, h3 { margin: 0; line-height: 1.1; font-weight: 800; letter-spacing: -.02em; }
+p { margin: 0; }
+.container { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: var(--pad); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.small { font-size: .85rem; color: var(--muted); }
+.skip { position: absolute; inset-inline-start: 8px; top: -60px; z-index: 100; background: var(--ink); color: #fff; padding: 8px 14px; border-radius: 8px; }
+.skip:focus { top: 8px; }
+.ph { background: #f6e1a1; color: #3d2f00; border-radius: 4px; padding: 0 .25em; font-size: .9em; }
+
+/* ── כפתורים ── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 22px; border-radius: 999px; border: 1.5px solid transparent;
+  font: 700 1rem var(--sans); text-decoration: none; cursor: pointer; white-space: nowrap;
+  transition: background-color .2s, color .2s, transform .15s;
+}
+.btn:active { transform: scale(.98); }
+.btn-wa { background: var(--wa); color: #fff; }
+.btn-wa:hover { background: var(--wa-dark); }
+.btn-lg { min-height: 58px; font-size: 1.08rem; width: 100%; }
+.btn-sm { min-height: 40px; padding: 0 16px; font-size: .92rem; }
+.btn-ghost { border-color: rgba(255, 255, 255, .45); color: #fff; }
+.btn-soft { background: var(--card); border-color: var(--line); color: var(--ink); }
+.btn-light { background: var(--cream); color: var(--ink); }
+.btn-line-light { border-color: rgba(243, 233, 220, .35); color: var(--cream); }
+.stack { display: grid; gap: 10px; }
+
+/* ── header ── */
+.top {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(245, 239, 231, .9); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(231, 220, 207, .8);
+}
+.top-bar { display: flex; align-items: center; gap: 14px; height: 62px; }
+.brand { display: grid; text-decoration: none; line-height: 1.15; margin-inline-end: auto; }
+.brand-en { font-family: var(--mark); font-weight: 500; font-size: 1.05rem; letter-spacing: .2em; }
+.brand-he { font-size: .72rem; color: var(--muted); letter-spacing: .02em; }
+.nav-desk, .head-cta { display: none !important; }
+
+.menu summary {
+  list-style: none; cursor: pointer; width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--card); border: 1px solid var(--line);
+}
+.menu summary::-webkit-details-marker { display: none; }
+.burger, .burger::before, .burger::after { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--ink); position: relative; transition: transform .25s, background .2s; }
+.burger::before, .burger::after { content: ''; position: absolute; inset-inline-start: 0; }
+.burger::before { top: -6px; }
+.burger::after { top: 6px; }
+.menu[open] .burger { background: transparent; }
+.menu[open] .burger::before { transform: translateY(6px) rotate(45deg); }
+.menu[open] .burger::after { transform: translateY(-6px) rotate(-45deg); }
+.menu-panel {
+  position: absolute; inset-inline: 0; top: 100%; background: var(--bg);
+  padding: 8px var(--pad) 22px; border-bottom: 1px solid var(--line);
+  box-shadow: 0 24px 40px -24px rgba(28, 20, 16, .35); animation: drop .25s ease;
+}
+.menu-panel ul { list-style: none; margin: 0 0 16px; padding: 0; }
+.menu-panel a:not(.btn) { display: block; padding: 13px 0; font-size: 1.35rem; font-weight: 700; text-decoration: none; border-bottom: 1px solid var(--line); }
+.menu-panel a[aria-current="page"] { color: var(--clay); }
+@keyframes drop { from { opacity: 0; transform: translateY(-6px); } }
+
+/* ── hero (בית): וידאו על כל המסך ── */
+.hero {
+  position: relative; overflow: hidden; color: #fff; background: var(--ink);
+  min-height: calc(100svh - 62px); display: flex; flex-direction: column; justify-content: flex-end;
+  border-radius: 0 0 28px 28px;
+}
+.hero-media { position: absolute; inset: 0; }
+.hero-media img, .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hero-poster { object-position: 50% 32%; }
+.hero-video { opacity: 0; transition: opacity 1.2s ease; }
+.hero-video.is-on { opacity: 1; }
+.hero-media::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(28, 20, 16, .05) 25%, rgba(28, 20, 16, .55) 55%, rgba(28, 20, 16, .94) 100%);
+}
+.hero-body { position: relative; padding-top: 34vh; padding-bottom: 30px; }
+.pill {
+  display: inline-block; font-size: .78rem; font-weight: 500; padding: 5px 12px; border-radius: 999px;
+  background: rgba(255, 255, 255, .14); border: 1px solid rgba(255, 255, 255, .22); margin-bottom: 14px;
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.hero h1 { font-size: clamp(2.7rem, 12.5vw, 4.4rem); line-height: .98; letter-spacing: -.035em; }
+.hero .lead { margin: 14px 0 22px; font-size: 1.05rem; color: rgba(255, 255, 255, .85); max-width: 32ch; }
+.chips { list-style: none; padding: 0; margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { font-size: .82rem; font-weight: 500; padding: 6px 12px; border-radius: 999px; background: rgba(255, 255, 255, .12); }
+.chips-light li { background: var(--card); border: 1px solid var(--line); color: var(--ink); }
+
+/* שלוש סיבות — צמוד לתחתית ה-hero */
+.why { list-style: none; margin: 18px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.why li { background: var(--card); border-radius: 16px; padding: 14px 8px; text-align: center; display: grid; gap: 2px; }
+.why strong { font-size: .95rem; }
+.why span { font-size: .74rem; color: var(--muted); line-height: 1.3; }
+
+/* ── סקשנים ── */
+.sec { padding: 34px 0 6px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.sec-head h2 { font-size: 1.5rem; }
+.swipe-hint { font-size: .8rem; color: var(--muted); }
+.swipe-hint::after { content: ' ←'; }
+
+/* rail: החלקה אופקית */
+.rail {
+  list-style: none; margin: 0 auto; padding: 2px var(--pad) 10px; display: flex; gap: 12px;
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad);
+  scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1120px;
+}
+.rail::-webkit-scrollbar { display: none; }
+.rail > li { flex: 0 0 64%; scroll-snap-align: start; }
+
+.tcard { display: block; background: var(--card); border-radius: var(--r); overflow: hidden; text-decoration: none; height: 100%; box-shadow: 0 1px 0 var(--line); }
+.tcard-img { display: block; aspect-ratio: 4 / 5; background: var(--sand); }
+.tcard-img img, .tcard-img .slot { width: 100%; height: 100%; object-fit: cover; }
+.tcard-body { display: grid; gap: 2px; padding: 12px 14px 16px; }
+.tcard h3 { font-size: 1.15rem; }
+.tcard-short { font-size: .85rem; color: var(--muted); }
+.tcard-meta { font-size: .92rem; font-weight: 700; color: var(--clay); margin-top: 4px; }
+
+.slot {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
+  background: linear-gradient(160deg, #efe4d6, #e3d3bf); color: var(--muted); font-size: .8rem; padding: 10px;
+}
+
+.rail-reviews > li { flex-basis: 44%; }
+.review { margin: 0; }
+.review .slot, .review img { aspect-ratio: 9 / 16; width: 100%; border-radius: 18px; object-fit: cover; }
+.review blockquote { margin: 0; background: var(--card); border-radius: 18px; padding: 16px; font-size: .95rem; }
+.review figcaption { font-size: .8rem; color: var(--muted); margin-top: 6px; padding-inline: 4px; }
+
+/* ── המטפלת ── */
+.about-card { display: grid; grid-template-columns: 38% 1fr; gap: 16px; align-items: center; }
+.about-img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 20px; }
+.about-img.slot { aspect-ratio: 4 / 5; border-radius: 20px; }
+.about-text { display: grid; gap: 8px; }
+.kicker { font-size: .78rem; font-weight: 700; color: var(--clay); }
+.about-text h2 { font-size: 1.7rem; }
+.rail-certs { margin-top: 18px; }
+.rail-certs > li { flex-basis: 74%; }
+.cert { display: grid; gap: 8px; text-decoration: none; }
+.cert img { border-radius: 12px; box-shadow: 0 10px 24px -16px rgba(28, 20, 16, .5); }
+.cert span { font-size: .8rem; color: var(--muted); line-height: 1.35; }
+.cert strong { display: block; font-size: .9rem; color: var(--ink); }
+
+/* ── מחירון ── */
+.prices { width: 100%; border-collapse: collapse; background: var(--card); border-radius: var(--r); overflow: hidden; }
+.prices th, .prices td { padding: 15px 14px; text-align: start; vertical-align: middle; border-bottom: 1px solid var(--line); }
+.prices tr:last-child > * { border-bottom: 0; }
+.prices th { font-weight: 600; font-size: .98rem; }
+.prices th a { text-decoration: none; }
+.prices small { display: block; font-weight: 400; font-size: .76rem; color: var(--muted); margin-top: 2px; }
+.prices td { font-size: .85rem; color: var(--muted); white-space: nowrap; }
+.prices .pr { font-size: 1.05rem; font-weight: 800; color: var(--ink); text-align: end; }
+
+/* ── שאלות ── */
+.faq details { background: var(--card); border-radius: 16px; margin-bottom: 8px; }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary h3 { font-size: 1rem; font-weight: 600; letter-spacing: 0; }
+.faq summary::after { content: '+'; font-size: 1.4rem; line-height: 1; color: var(--clay); transition: transform .2s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 16px 16px; color: var(--muted); font-size: .95rem; }
+
+/* ── קביעת תור ── */
+.book { padding-bottom: 34px; }
+.book-card { background: var(--ink); color: var(--cream); border-radius: 28px; padding: 30px 20px 22px; }
+.book-card h2 { font-size: 2rem; }
+.book-card > p { margin: 8px 0 20px; color: var(--cream-dim); }
+.info { margin: 22px 0 0; display: grid; }
+.info div { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px solid rgba(243, 233, 220, .12); font-size: .92rem; }
+.info dt { color: var(--cream-dim); }
+.info dd { margin: 0; font-weight: 500; text-align: end; }
+.nav-to { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.nav-to a {
+  display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; border-radius: 14px;
+  background: rgba(243, 233, 220, .08); text-decoration: none; font-weight: 600; font-size: .92rem;
+}
+.form-wrap { margin-top: 18px; border-top: 1px solid rgba(243, 233, 220, .12); padding-top: 14px; }
+.form-wrap summary { cursor: pointer; text-align: center; font-size: .92rem; color: var(--cream-dim); text-decoration: underline; text-underline-offset: 4px; list-style: none; }
+.form-wrap summary::-webkit-details-marker { display: none; }
+.form { display: grid; gap: 14px; margin-top: 16px; }
+.field { display: grid; gap: 6px; }
+.field label { font-size: .85rem; color: var(--cream-dim); }
+.opt { opacity: .8; }
+.field input, .field select {
+  font: 400 1rem var(--sans); min-height: 50px; padding: 0 14px; width: 100%; border-radius: 14px;
+  background: rgba(243, 233, 220, .08); border: 1px solid rgba(243, 233, 220, .22); color: var(--cream);
+}
+.field select option { color: var(--ink); }
+.field input::placeholder { color: rgba(243, 233, 220, .45); }
+.field input[aria-invalid="true"] { border-color: #ff8a80; }
+.field-error { color: #ffb4ab; font-size: .85rem; }
+.hp { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* ── עמוד שירות ── */
+.crumbs ol { list-style: none; display: flex; gap: 6px; margin: 12px 0 10px; padding: 0; font-size: .8rem; color: var(--muted); }
+.crumbs li + li::before { content: '‹'; margin-inline-end: 6px; }
+.crumbs a { text-decoration: none; }
+.s-hero { display: grid; gap: 18px; }
+.s-hero-img { border-radius: 26px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--sand); }
+.s-hero-img img, .s-hero-img .slot { width: 100%; height: 100%; object-fit: cover; }
+.s-hero h1 { font-size: clamp(2rem, 9vw, 3rem); letter-spacing: -.03em; }
+.s-hero .lead { margin-top: 10px; color: var(--muted); font-size: 1.05rem; }
+.s-hero .chips { margin: 14px 0 18px; }
+
+.ticks { list-style: none; margin-top: 0; display: grid; gap: 8px; }
+.ticks li { display: flex; gap: 10px; align-items: flex-start; background: var(--card); border-radius: 14px; padding: 12px 14px; font-size: .97rem; }
+.ticks svg { flex: 0 0 auto; color: var(--wa); margin-top: 3px; }
+
+.rail-types > li { flex-basis: 56%; }
+.type { background: var(--card); border-radius: 18px; padding: 16px; }
+.type h3::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--clay); margin-inline-end: 8px; vertical-align: middle; }
+.type h3 { font-size: 1.1rem; margin-bottom: 4px; }
+.type p { font-size: .9rem; color: var(--muted); }
+
+.steps { list-style: none; margin-top: 0; counter-reset: s; display: grid; gap: 10px; }
+.steps li { counter-increment: s; display: flex; gap: 12px; align-items: center; font-size: .97rem; }
+.steps li::before {
+  content: counter(s); flex: 0 0 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ink); color: var(--cream); font-weight: 700; font-size: .9rem;
+}
+
+.thanks { text-align: center; padding: 80px var(--pad) 60px; display: grid; gap: 16px; justify-items: center; }
+.thanks h1 { font-size: 2.6rem; }
+.thanks .lead { color: var(--muted); max-width: 30ch; }
+.thanks .stack { width: 100%; max-width: 360px; }
+
+/* ── footer ── */
+.foot { background: var(--ink); color: var(--cream-dim); padding: 36px 0 30px; margin-top: 10px; font-size: .9rem; }
+.foot-brand { font-family: var(--mark); font-size: 1.5rem; letter-spacing: .22em; color: var(--cream); margin-bottom: 14px; }
+.foot address { font-style: normal; line-height: 1.8; }
+.foot strong { color: var(--cream); font-weight: 600; }
+.foot a { color: var(--cream); text-decoration: none; }
+.foot-links { margin: 12px 0; }
+.foot-links a { display: inline-flex; align-items: center; gap: 6px; }
+.foot ul { list-style: none; padding: 0; margin: 14px 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.copy { font-size: .78rem; opacity: .7; }
+
+/* ── סרגל וואטסאפ דביק (נייד) ── */
+.sticky {
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 50; display: flex; gap: 10px;
+  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+  background: rgba(245, 239, 231, .92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  border-top: 1px solid var(--line); transition: transform .3s ease;
+}
+.sticky.is-hidden { transform: translateY(110%); }
+.sticky .btn-wa { flex: 1; min-height: 54px; font-size: 1.05rem; }
+.sticky-tel { flex: 0 0 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: var(--card); border: 1px solid var(--line); }
+
+/* ── מסכים רחבים ── */
+@media (min-width: 720px) {
+  :root { --pad: 28px; }
+  .rail > li { flex-basis: 36%; }
+  .rail-reviews > li { flex-basis: 26%; }
+  .rail-certs > li, .rail-types > li { flex-basis: 40%; }
+  .s-hero-img { aspect-ratio: 16 / 10; }
+}
+
+@media (min-width: 1000px) {
+  body { padding-bottom: 0; }
+  .sticky, .menu { display: none; }
+  .nav-desk { display: block !important; margin-inline: auto; }
+  .nav-desk ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
+  .nav-desk a { display: block; padding: 8px 12px; border-radius: 999px; text-decoration: none; font-weight: 500; font-size: .95rem; }
+  .nav-desk a:hover { background: var(--card); }
+  .nav-desk a[aria-current="page"] { background: var(--ink); color: var(--cream); }
+  .head-cta { display: inline-flex !important; }
+  .brand { margin-inline-end: 0; }
+
+  .hero { min-height: 0; border-radius: 0 0 40px 40px; display: block; }
+  .hero-media { position: absolute; inset-block: 32px; inset-inline-end: max(28px, calc((100vw - 1120px) / 2 + 28px)); inset-inline-start: auto; width: 380px; border-radius: 28px; overflow: hidden; }
+  .hero-media::after { background: linear-gradient(180deg, transparent 60%, rgba(28, 20, 16, .35)); }
+  .hero-body { padding-block: 110px 120px; padding-inline-end: calc(380px + 80px); }
+  .hero h1 { font-size: 4.6rem; }
+  .hero .stack { grid-template-columns: auto auto; justify-content: start; }
+  .hero .btn-lg { width: auto; padding: 0 30px; }
+  .why { margin-top: -36px; position: relative; max-width: 760px; gap: 12px; }
+  .why li { padding: 18px 10px; box-shadow: 0 12px 30px -20px rgba(28, 20, 16, .4); }
+
+  .sec { padding-top: 56px; }
+  .sec-head h2 { font-size: 2rem; }
+  .swipe-hint { display: none; }
+  .rail { overflow: visible; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); padding-inline: var(--pad); }
+  .rail-reviews { grid-template-columns: repeat(6, 1fr); }
+  .rail-certs, .rail-types { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+  .about-card { grid-template-columns: 300px 1fr; gap: 40px; }
+  .about-text h2 { font-size: 2.4rem; }
+  .prices, .faq { max-width: 760px; }
+  .book-card { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; padding: 44px; }
+  .book-card > h2, .book-card > p, .book-card > .stack { grid-column: 1; }
+  .book-card > .info, .book-card > .nav-to, .book-card > .form-wrap { grid-column: 2; }
+  .book-card > .info { grid-row: 1 / span 3; margin-top: 0; align-self: start; }
+
+  .s-hero { grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; padding-block: 10px 20px; }
+  .s-hero-img { aspect-ratio: 4 / 5; order: 2; }
+  .s-hero .stack { max-width: 360px; }
+  .ticks { grid-template-columns: 1fr 1fr; }
+  .steps { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .foot { padding-bottom: 36px; }
+}
+
+/* ── מטרות מגע של לפחות 44px (נגישות) ── */
+.brand { min-height: 44px; align-content: center; }
+.prices th a { display: inline-flex; align-items: center; min-height: 44px; }
+.form-wrap summary { padding: 10px 0; }
+.crumbs a { display: inline-flex; align-items: center; min-height: 44px; }
