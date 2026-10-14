@@ -68,11 +68,14 @@ const waBtn = (text, loc, label = 'קביעת תור בוואטסאפ', cls = 'b
 const telBtn = (loc, cls = 'btn btn-soft') =>
   `<a class="${cls}" href="${telLink}" data-loc="${loc}">${icon.phone}<span dir="ltr">${site.phoneDisplay}</span></a>`;
 
-// מחיר + משך לכרטיס, בלי placeholder של משך כשאין משך
-const meta = (k) => [S[k].duration || S[k].durLabel ? durShort(S[k]) : '', price(S[k])].filter(Boolean).join(' · ');
+// בכרטיס מוצג מחיר בלבד, בלי זמנים
+const meta = (k) => price(S[k]);
 
 function picture(o, label, { cls = '', eager = false, sizes = '(min-width: 1000px) 40vw, 100vw' } = {}) {
-  if (o?.panel) return `<span class="panel panel-${o.panel} ${cls}" aria-hidden="true"><b>M</b><span>${esc(label)}</span></span>`;
+  if (o?.svg) {
+    const pos = o.pos ? ` style="object-position:${o.pos}"` : '';
+    return `<img class="${cls}" src="/assets/img/${o.svg}.svg"${pos} width="${o.width}" height="${o.height}" alt="${esc(o.alt || label)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+  }
   if (o) {
     const url = (w) => `/assets/img/${o.name}-${w}.webp`;
     const set = o.widths.length > 1 ? ` srcset="${o.widths.map((w) => `${url(w)} ${w}w`).join(', ')}" sizes="${sizes}"` : '';
@@ -319,7 +322,7 @@ ${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, siz
 <h1 id="hero-h">עיסוי לנשים<br>בבית דגן</h1>
 <p class="lead">${p.lead}</p>
 <div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}<a class="btn btn-ghost" href="#prices">למחירון</a></div>
-<ul class="chips"><li>${durShort(S.massage)} · ${price(S.massage)}</li><li>${daysText().replace('ימים ', '')} · ${hoursHtml()}</li></ul>
+<ul class="chips"><li>${S.massage.name} · ${price(S.massage)}</li><li>נשים בלבד</li></ul>
 </div>
 </section>
 

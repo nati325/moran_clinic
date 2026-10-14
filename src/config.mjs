@@ -37,7 +37,7 @@ export const site = {
       date: 'מרץ 2025',
       iso: '2025-03',
       img: 'diploma-cosmetics',
-      size: [1060, 774],
+      size: [1000, 714],
     },
     {
       title: 'Face Master: מאמנת מקצועית לשרירי הפנים',
@@ -46,7 +46,7 @@ export const site = {
       iso: '2025-12-07',
       detail: 'כולל פיסול פנים, עיסוי קרקפת ועיסוי יפני',
       img: 'diploma-faceclub',
-      size: [1100, 746],
+      size: [1000, 714],
     },
     {
       title: 'ארומתרפיה קוסמטית',
@@ -54,7 +54,7 @@ export const site = {
       date: 'אפריל 2024',
       iso: '2024-04',
       img: 'diploma-shifon',
-      size: [1000, 685],
+      size: [1000, 714],
     },
   ],
   // עדיין חסר: תעודת העיסוי ושנות הוותק
@@ -83,7 +83,7 @@ export const site = {
   reviewSlots: 6, // כמה מקומות ריקים להציג כל עוד אין המלצות
 
   // תמונות WebP בתיקייה src/assets/img (נוצרות עם tools/process_images.py).
-  // name = תחילת שם הקובץ; widths = הגדלים שנוצרו. panel = פאנל מעוצב בלי תמונה. null = מסגרת "מקום לתמונה".
+  // name = תחילת שם הקובץ; widths = הגדלים שנוצרו. svg = איור קו. null = מסגרת "מקום לתמונה".
   images: {
     hero: {
       name: 'hero-moran', widths: [720, 1095], width: 1095, height: 1600,
@@ -97,14 +97,23 @@ export const site = {
       name: 'massage-cupping', widths: [640, 1000], width: 1000, height: 1250,
       alt: 'עיסוי משולב עם כוסות רוח על הגב, ומורן מחייכת ברקע',
     },
-    // אין עדיין צילום באיכות מספקת: מוצג פאנל מעוצב במקום תמונה
-    facialMassage: { panel: 'rose' },
+    // אין עדיין צילום באיכות מספקת: איור קו (tools/make_illustrations.py) עד שיהיה צילום
+    facialMassage: {
+      svg: 'illus-facial-massage', width: 800, height: 1000, pos: '50% 28%',
+      alt: 'איור קו של אישה עם עיניים עצומות ותנועות עיסוי סביב הלחיים',
+    },
     facialTreatment: {
       name: 'facial-mask', widths: [720, 1200], width: 1200, height: 1500,
       alt: 'מריחת מסכת חימר במכחול על הפנים של מטופלת בטיפול פנים',
     },
-    waxing: { panel: 'sand' },
-    brows: { panel: 'clay' },
+    waxing: {
+      svg: 'illus-waxing', width: 800, height: 1000, pos: '50% 55%',
+      alt: 'איור קו של צנצנת שעווה עם מרית ופרחי קמומיל',
+    },
+    brows: {
+      svg: 'illus-brows', width: 800, height: 1000, pos: '50% 45%',
+      alt: 'איור קו של עין וגבה מעוצבת',
+    },
   },
 };
 

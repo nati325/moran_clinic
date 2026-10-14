@@ -144,7 +144,7 @@ p { margin: 0; }
 
 .tcard { display: block; background: var(--card); border-radius: var(--r); overflow: hidden; text-decoration: none; height: 100%; box-shadow: 0 1px 0 var(--line); }
 .tcard-img { display: block; aspect-ratio: 4 / 5; background: var(--sand); }
-.tcard-img img, .tcard-img .slot, .tcard-img .panel { width: 100%; height: 100%; object-fit: cover; }
+.tcard-img img, .tcard-img .slot { width: 100%; height: 100%; object-fit: cover; }
 .tcard-body { display: grid; gap: 2px; padding: 12px 14px 16px; }
 .tcard h3 { font-size: 1.15rem; }
 .tcard-short { font-size: .85rem; color: var(--muted); }
@@ -154,22 +154,6 @@ p { margin: 0; }
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center;
   background: linear-gradient(160deg, #efe4d6, #e3d3bf); color: var(--muted); font-size: .8rem; padding: 10px;
 }
-
-/* פאנל מעוצב: במקום צילום שלא עומד ברמה הנדרשת */
-.panel {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; text-align: center;
-  color: var(--cream); padding: 16px; position: relative; overflow: hidden; background: var(--ink);
-}
-.panel::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(120% 90% at 20% 0%, var(--p1), transparent 62%), linear-gradient(160deg, var(--p2), var(--ink));
-}
-.panel > * { position: relative; }
-.panel b { font: 500 clamp(3.2rem, 22vw, 5.5rem)/1 var(--mark); letter-spacing: .04em; opacity: .92; }
-.panel span { font-size: .85rem; letter-spacing: .06em; color: var(--cream-dim); }
-.panel-rose { --p1: #b9786a; --p2: #5a2f2a; }
-.panel-sand { --p1: #c9a57c; --p2: #5a4128; }
-.panel-clay { --p1: #b8643f; --p2: #4a2415; }
 
 .rail-reviews > li { flex-basis: 44%; }
 .review { margin: 0; }
@@ -247,7 +231,7 @@ p { margin: 0; }
 .crumbs a { text-decoration: none; }
 .s-hero { display: grid; gap: 18px; }
 .s-hero-img { border-radius: 26px; overflow: hidden; aspect-ratio: 1 / 1; background: var(--sand); }
-.s-hero-img img, .s-hero-img .slot, .s-hero-img .panel { width: 100%; height: 100%; object-fit: cover; }
+.s-hero-img img, .s-hero-img .slot { width: 100%; height: 100%; object-fit: cover; }
 .s-hero h1 { font-size: clamp(2rem, 9vw, 3rem); letter-spacing: -.03em; }
 .s-hero .lead { margin-top: 10px; color: var(--muted); font-size: 1.05rem; }
 .s-hero .chips { margin: 14px 0 18px; }
