@@ -94,8 +94,8 @@ export const site = {
       alt: 'מורן מדר מבצעת ניקוי פנים למטופלת, מתחת למנורת הגדלה',
     },
     massage: {
-      name: 'massage-cupping', widths: [640, 1000], width: 1000, height: 1250,
-      alt: 'עיסוי משולב עם כוסות רוח על הגב, ומורן מחייכת ברקע',
+      name: 'massage-back', widths: [640, 1000], width: 1000, height: 1250, pos: '50% 40%',
+      alt: 'ידיים מעסות כתפיים וגב בעיסוי גוף',
     },
     // אין עדיין צילום באיכות מספקת: איור קו (tools/make_illustrations.py) עד שיהיה צילום
     facialMassage: {
