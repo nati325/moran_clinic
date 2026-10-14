@@ -1,22 +1,7 @@
-// וידאו ה-hero, הסרגל הדביק, מדידת קליקים וולידציה לטופס. התוכן עצמו לא תלוי בקובץ הזה.
+// הסרגל הדביק, מדידת קליקים וולידציה לטופס. התוכן עצמו לא תלוי בקובץ הזה.
 (function () {
   var body = document.body;
   var waConversion = body.getAttribute('data-ads-wa');
-  var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var saveData = navigator.connection && navigator.connection.saveData;
-
-  // וידאו ה-hero: נטען רק אחרי שהעמוד נטען (התמונה היא ה-LCP), ולא במצב חיסכון בנתונים
-  var hero = document.querySelector('video[data-hero]');
-  if (hero && !calm && !saveData) {
-    var tryPlay = function () { if (hero.paused) hero.play().catch(function () {}); };
-    hero.addEventListener('playing', function () { hero.classList.add('is-on'); }, { once: true });
-    hero.addEventListener('canplay', tryPlay);
-    document.addEventListener('visibilitychange', function () { if (!document.hidden) tryPlay(); });
-    window.addEventListener('load', function () {
-      hero.src = hero.getAttribute('data-src');
-      tryPlay();
-    });
-  }
 
   // הסרגל הדביק בנייד מופיע רק אחרי שגוללים מעבר לכפתור הראשי
   var sticky = document.querySelector('[data-sticky]');

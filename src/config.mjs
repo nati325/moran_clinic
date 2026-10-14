@@ -61,9 +61,6 @@ export const site = {
   massageTraining: '[לאשר: תעודת עיסוי, שם המכון ושנה]',
   experience: '[מספר שנות ותק]',
 
-  // סרטון הקליניקה (נערך עם tools/edit_video.py)
-  video: { src: '/assets/video/clinic.mp4', poster: '/assets/video/clinic-poster.webp', width: 720, height: 1280 },
-
   // קישור ליומן אונליין. כל עוד ריק — "לקביעת תור" מוביל לטופס בעמוד.
   bookingUrl: '',
 
@@ -86,7 +83,7 @@ export const site = {
   reviewSlots: 6, // כמה מקומות ריקים להציג כל עוד אין המלצות
 
   // תמונות WebP בתיקייה src/assets/img (נוצרות עם tools/process_images.py).
-  // name = תחילת שם הקובץ; widths = הגדלים שנוצרו. null = מסגרת "מקום לתמונה".
+  // name = תחילת שם הקובץ; widths = הגדלים שנוצרו. panel = פאנל מעוצב בלי תמונה. null = מסגרת "מקום לתמונה".
   images: {
     hero: {
       name: 'hero-moran', widths: [720, 1095], width: 1095, height: 1600,
@@ -100,28 +97,15 @@ export const site = {
       name: 'massage-cupping', widths: [640, 1000], width: 1000, height: 1250,
       alt: 'עיסוי משולב עם כוסות רוח על הגב, ומורן מחייכת ברקע',
     },
-    facialMassage: {
-      name: 'facial-lifting', widths: [446], width: 446, height: 558,
-      alt: 'עיסוי לפטינג: הידיים של מורן על הרקות והלסת של מטופלת',
-    },
+    // אין עדיין צילום באיכות מספקת: מוצג פאנל מעוצב במקום תמונה
+    facialMassage: { panel: 'rose' },
     facialTreatment: {
       name: 'facial-mask', widths: [720, 1200], width: 1200, height: 1500,
       alt: 'מריחת מסכת חימר במכחול על הפנים של מטופלת בטיפול פנים',
     },
-    waxing: {
-      name: 'clinic-candles', widths: [464], width: 464, height: 580, pos: '50% 70%',
-      alt: 'פינה בקליניקה של מורן: נרות דולקים, שמנים ופרחים יבשים',
-    },
-    brows: {
-      name: 'clinic-logo-wall', widths: [464], width: 464, height: 580, pos: '50% 30%',
-      alt: 'הלוגו של מורן מדר על קיר הקליניקה, ומגבות מקופלות',
-    },
-    // רקעים
-    ctaBg: { name: 'clinic-logo-wall', widths: [464], width: 464, height: 580, alt: '' },
+    waxing: { panel: 'sand' },
+    brows: { panel: 'clay' },
   },
-  ambient: { src: '/assets/video/ambient.mp4', poster: '/assets/video/ambient-poster.webp' },
-  // וידאו הרקע של ה-hero בנייד (tools/edit_video.py → build_hero_loop)
-  heroVideo: '/assets/video/hero.mp4',
 };
 
 // מחירים ומשכים. null = עוד לא ידוע (יוצג כ-placeholder).

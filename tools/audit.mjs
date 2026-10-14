@@ -78,8 +78,7 @@ const home = await readFile(join(OUT, 'index.html'), 'utf8');
 const css = (await stat(join(OUT, 'assets/styles.css'))).size;
 const js = (await stat(join(OUT, 'assets/site.js'))).size;
 const poster = (await stat(join(OUT, 'assets/img/hero-moran-720.webp'))).size;
-const video = (await stat(join(OUT, 'assets/video/hero.mp4'))).size;
-notes.push(`\nמשקל עמוד הבית: HTML ${(home.length / 1024).toFixed(0)}KB · CSS ${(css / 1024).toFixed(0)}KB · JS ${(js / 1024).toFixed(0)}KB · תמונת hero ${(poster / 1024).toFixed(0)}KB · וידאו (אחרי טעינה) ${(video / 1e6).toFixed(1)}MB`);
+notes.push(`\nמשקל עמוד הבית: HTML ${(home.length / 1024).toFixed(0)}KB · CSS ${(css / 1024).toFixed(0)}KB · JS ${(js / 1024).toFixed(0)}KB · תמונת hero ${(poster / 1024).toFixed(0)}KB`);
 
 console.log(notes.join('\n'));
 console.log(errors.length ? `\n✗ ${errors.length} בעיות:\n` + errors.map((e) => '  - ' + e).join('\n') : '\n✓ אין בעיות');

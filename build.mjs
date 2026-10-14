@@ -72,6 +72,7 @@ const telBtn = (loc, cls = 'btn btn-soft') =>
 const meta = (k) => [S[k].duration || S[k].durLabel ? durShort(S[k]) : '', price(S[k])].filter(Boolean).join(' · ');
 
 function picture(o, label, { cls = '', eager = false, sizes = '(min-width: 1000px) 40vw, 100vw' } = {}) {
+  if (o?.panel) return `<span class="panel panel-${o.panel} ${cls}" aria-hidden="true"><b>M</b><span>${esc(label)}</span></span>`;
   if (o) {
     const url = (w) => `/assets/img/${o.name}-${w}.webp`;
     const set = o.widths.length > 1 ? ` srcset="${o.widths.map((w) => `${url(w)} ${w}w`).join(', ')}" sizes="${sizes}"` : '';
@@ -312,7 +313,6 @@ function homeMain(p) {
 <section class="hero" aria-labelledby="hero-h">
 <div class="hero-media">
 ${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, sizes: '(min-width: 1000px) 420px, 100vw' })}
-<video class="hero-video" data-hero muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" data-src="${site.heroVideo}"></video>
 </div>
 <div class="hero-body container">
 <p class="pill">קליניקה פרטית לנשים · ${site.city}</p>
