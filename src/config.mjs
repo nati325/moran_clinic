@@ -97,10 +97,9 @@ export const site = {
       name: 'massage-back', widths: [640, 1000], width: 1000, height: 1250, pos: '50% 40%',
       alt: 'ידיים מעסות כתפיים וגב בעיסוי גוף',
     },
-    // אין עדיין צילום באיכות מספקת: איור קו (tools/make_illustrations.py) עד שיהיה צילום
     facialMassage: {
-      svg: 'illus-facial-massage', width: 800, height: 1000, pos: '50% 28%',
-      alt: 'איור קו של אישה עם עיניים עצומות ותנועות עיסוי סביב הלחיים',
+      name: 'facial-relax', widths: [640, 1000], width: 1000, height: 1250, pos: '50% 45%',
+      alt: 'אישה שוכבת בעיניים עצומות ברגיעה, ויד תומכת בראשה',
     },
     facialTreatment: {
       name: 'facial-mask', widths: [720, 1200], width: 1200, height: 1500,

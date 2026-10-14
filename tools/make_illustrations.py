@@ -156,6 +156,6 @@ def facial():
     return frame(''.join(p))
 
 
-for name, fn in (('facial-massage', facial), ('waxing', waxing), ('brows', brows)):
+for name, fn in (('waxing', waxing), ('brows', brows)):
     (OUT / f'illus-{name}.svg').write_text(fn(), encoding='utf-8')
     print('illus-' + name)
