@@ -211,6 +211,7 @@ p { margin: 0; }
 .field input[aria-invalid="true"] { border-bottom-color: #ff8a80; }
 .field-error { color: #ffb4ab; font-size: .85rem; }
 .form .btn-light { margin-top: 8px; }
+.form-status { color: #ffb4ab; font-size: .9rem; }
 .hp { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ── עמוד שירות ── */

@@ -64,8 +64,12 @@ export const site = {
   // קישור ליומן אונליין. כל עוד ריק — "לקביעת תור" מוביל לטופס בעמוד.
   bookingUrl: '',
 
-  // טופס: ברירת המחדל עובדת עם Netlify Forms. ראו README לחלופות.
-  form: { mode: 'netlify', action: '/thank-you/' },
+  // טופס יצירת קשר: נשלח במייל למורן דרך שירות טפסים (אין שרת באתר סטטי).
+  // כל עוד action ריק, הטופס לא מוצג באתר בכלל (וואטסאפ וטלפון עובדים כרגיל).
+  // Web3Forms: action 'https://api.web3forms.com/submit', fields { access_key: '<המפתח שהגיע למייל של מורן>', subject: 'פנייה חדשה מהאתר' }
+  // Formspree: action 'https://formspree.io/f/<המזהה>', fields {}
+  // Netlify Forms: mode 'netlify', action '/thank-you/'
+  form: { mode: 'external', action: '', fields: {} },
 
   // מדידה. השאירו ריק כדי לא לטעון gtag בכלל.
   ga4Id: '', // 'G-XXXXXXXXXX'

@@ -75,6 +75,23 @@
         (nameOk ? phone : name).focus();
         return;
       }
+      if (form.hasAttribute('data-ajax')) {
+        e.preventDefault();
+        if (sent) return;
+        sent = true;
+        var btn = form.querySelector('button[type="submit"]');
+        var status = form.querySelector('.form-status');
+        if (status) status.hidden = true;
+        if (btn) btn.disabled = true;
+        track('form_submit', { service: form.elements['service'].value, page_path: location.pathname });
+        var data = new FormData(form);
+        data.delete('company');
+        data.delete('form-name');
+        fetch(form.getAttribute('action'), { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); location.href = '/thank-you/'; })
+          .catch(function () { sent = false; if (btn) btn.disabled = false; if (status) status.hidden = false; });
+        return;
+      }
       if (sent || typeof window.gtag !== 'function') return;
 
       // שולחים את האירוע לפני שהדפדפן עובר לעמוד התודה

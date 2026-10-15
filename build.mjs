@@ -180,6 +180,9 @@ function bookingSection(page) {
     ['unsure', 'עוד לא בטוחה'],
   ];
   const netlify = site.form.mode === 'netlify' ? ' data-netlify="true" netlify-honeypot="company"' : '';
+  const ajax = site.form.mode === 'external' ? ' data-ajax' : '';
+  const hidden = Object.entries(site.form.fields || {}).map(([k, v]) => `<input type="hidden" name="${esc(k)}" value="${esc(v)}">`).join('');
+  const formEnabled = site.form.mode === 'netlify' || Boolean(site.form.action);
   return `<section class="sec book" id="booking" aria-labelledby="booking-h">
 <div class="container"><div class="book-card">
 <h2 id="booking-h">קובעות תור?</h2>
@@ -191,10 +194,10 @@ function bookingSection(page) {
 <div><dt>כתובת</dt><dd>${fullAddress()}</dd></div>
 </dl>
 <div class="nav-to"><a href="${esc(wazeUrl)}" target="_blank" rel="noopener" data-loc="waze">Waze</a><a href="${esc(mapsUrl)}" target="_blank" rel="noopener" data-loc="maps">Google Maps</a></div>
-<details class="form-wrap">
+${formEnabled ? `<details class="form-wrap">
 <summary>או השאירי פרטים ונחזור אלייך</summary>
-<form class="form" name="booking" method="POST" action="${esc(site.form.action)}" data-booking-form${netlify}>
-<input type="hidden" name="form-name" value="booking">
+<form class="form" name="booking" method="POST" action="${esc(site.form.action || '/thank-you/')}" data-booking-form${ajax}${netlify}>
+${hidden}<input type="hidden" name="form-name" value="booking">
 <p class="hp" aria-hidden="true"><label>לא למילוי <input name="company" tabindex="-1" autocomplete="off"></label></p>
 <div class="field"><label for="f-name">שם</label>
 <input id="f-name" name="name" type="text" autocomplete="given-name" required minlength="2" aria-describedby="f-name-err">
@@ -206,9 +209,10 @@ function bookingSection(page) {
 <select id="f-service" name="service">${opts.map(([v, l]) => `<option value="${v}"${v === page.formService ? ' selected' : ''}>${l}</option>`).join('')}</select></div>
 <div class="field"><label for="f-time">זמן מועדף <span class="opt">(לא חובה)</span></label>
 <input id="f-time" name="preferred_time" type="text" placeholder="למשל: שלישי אחרי 18:00"></div>
+<p class="form-status" role="alert" hidden>לא הצלחנו לשלוח. אפשר לכתוב למורן בוואטסאפ או להתקשר.</p>
 <button class="btn btn-light btn-lg" type="submit">שליחה</button>
 </form>
-</details>
+</details>` : ''}
 </div></div>
 </section>`;
 }
