@@ -128,7 +128,7 @@ function priceSection(keys, title = 'מחירון') {
       return `<tr><th scope="row"><a href="${s.path}">${s.name}</a>${note}</th><td class="pr">${price(s)}</td></tr>`;
     })
     .join('');
-  return `<section class="sec" id="prices" aria-labelledby="prices-h">
+  return `<section class="sec sec-narrow" id="prices" aria-labelledby="prices-h">
 ${secHead('prices-h', title)}
 <div class="container"><table class="prices">
 <caption class="sr">מחירי הטיפולים בקליניקה של מורן מדר ב${site.city}</caption>
@@ -138,7 +138,7 @@ ${secHead('prices-h', title)}
 }
 
 function faqSection(faq) {
-  return `<section class="sec" aria-labelledby="faq-h">
+  return `<section class="sec sec-narrow" aria-labelledby="faq-h">
 ${secHead('faq-h', 'שאלות נפוצות')}
 <div class="container faq">${faq.map((f) => `<details><summary><h3>${f.q}</h3></summary><p>${f.a}</p></details>`).join('')}</div>
 </section>`;
@@ -270,7 +270,7 @@ function analyticsHead(page) {
 
 function layout(page, mainHtml, schemas) {
   const canonical = abs(page.path);
-  const ogImg = abs(`/assets/img/${site.images.hero.name}-${site.images.hero.widths.at(-1)}.webp`);
+  const ogImg = abs('/assets/img/og-image.jpg');
   const waConv = site.adsId && site.adsLabelWhatsapp ? ` data-ads-wa="${site.adsId}/${site.adsLabelWhatsapp}"` : '';
   return `<!doctype html>
 <html lang="he" dir="rtl">
@@ -287,8 +287,14 @@ ${page.noindex ? '<meta name="robots" content="noindex, follow">\n' : ''}<meta p
 <meta property="og:description" content="${esc(page.description)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${ogImg}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#1e1a16">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/Heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/FrankRuhlLibre-hebrew.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${CSS_URL}">
@@ -350,17 +356,17 @@ function serviceMain(p) {
 </div>
 </section>
 
-<section class="sec" aria-labelledby="facts-h">
+<section class="sec sec-narrow" aria-labelledby="facts-h">
 ${secHead('facts-h', 'בקצרה')}
 <ul class="ticks container">${p.bullets.map((b) => `<li><span>${b}</span></li>`).join('')}</ul>
 </section>
 
-${p.types ? `<section class="sec" aria-labelledby="types-h">
+${p.types ? `<section class="sec sec-narrow" aria-labelledby="types-h">
 ${secHead('types-h', p.typesHeading)}
 <ul class="types container">${p.types.map((t) => `<li class="type"><h3>${t.h}</h3><p>${t.p}</p></li>`).join('')}</ul>
 </section>` : ''}
 
-<section class="sec" aria-labelledby="steps-h">
+<section class="sec sec-narrow" aria-labelledby="steps-h">
 ${secHead('steps-h', 'איך זה עובד')}
 <ol class="steps container">${p.steps.map((t) => `<li>${t}</li>`).join('')}</ol>
 </section>
@@ -579,5 +585,10 @@ if (found.size) console.log(`\nplaceholders שנותרו (${found.size}):\n${lis
 if (PROD && found.size) {
   console.error('\n✗ בגרסת production אסור שיישארו placeholders. הבנייה נכשלה.');
   process.exitCode = 1;
+}
+const STRICT = process.argv.includes('--strict');
+if (PROD && /example\./.test(site.url)) {
+  console.error(`\n⚠ site.url עדיין ${site.url}: canonical, sitemap ו-schema מצביעים על דומיין דמה. להחליף ב-src/config.mjs.`);
+  if (STRICT) process.exitCode = 1;
 }
 if (missingImages.size) console.log(`\nתמונות חסרות (${missingImages.size}):\n${list(missingImages)}`);
