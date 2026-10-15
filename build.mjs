@@ -71,6 +71,7 @@ const telBtn = (loc, cls = 'btn btn-soft') =>
   `<a class="${cls}" href="${telLink}" data-loc="${loc}">${icon.phone}<span dir="ltr">${site.phoneDisplay}</span></a>`;
 
 function picture(o, label, { cls = '', eager = false, sizes = '(min-width: 1000px) 40vw, 100vw' } = {}) {
+  if (o?.none) return '';
   if (o?.svg) {
     const pos = o.pos ? ` style="object-position:${o.pos}"` : '';
     return `<img class="${cls}" src="/assets/img/${o.svg}.svg"${pos} width="${o.width}" height="${o.height}" alt="${esc(o.alt || label)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
@@ -88,18 +89,28 @@ function picture(o, label, { cls = '', eager = false, sizes = '(min-width: 1000p
 
 const secHead = (id, title, extra = '') => `<div class="sec-head container"><h2 id="${id}">${title}</h2>${extra}</div>`;
 
-function treatmentRail(keys, id = 'treatments-h', title = 'הטיפולים') {
-  return `<section class="sec" aria-labelledby="${id}">
-${secHead(id, title)}
-<ul class="tgrid">${keys
-    .map((k) => {
-      const p = byKey[k];
-      return `<li><a class="titem" href="${p.path}">
-<span class="titem-img">${picture(site.images[k], p.navLabel, { sizes: '(min-width: 1000px) 220px, (min-width: 720px) 30vw, 100vw' })}</span>
+// הטיפולים: צילום גדול לראשון, זוג צילומים, והשאר כשורות טקסט (שירות בלי צילום לא מקבל קישוט)
+function treatmentRail(keys, id = 'treatments-h', title = 'הטיפולים', { lead = true } = {}) {
+  const hasImg = (k) => site.images[k] && !site.images[k].none;
+  const withImg = keys.filter(hasImg);
+  const text = keys.filter((k) => !hasImg(k));
+  const bigFirst = lead && withImg.length >= 3;
+  const card = (k, i) => {
+    const p = byKey[k];
+    const big = bigFirst && i === 0;
+    return `<li${big ? ' class="tx-lead"' : ''}><a class="titem" href="${p.path}">
+<span class="titem-img">${picture(site.images[k], p.navLabel, { sizes: big ? '(min-width: 1000px) 360px, 100vw' : '(min-width: 1000px) 360px, 50vw' })}</span>
 <span class="titem-body"><h3>${p.navLabel}</h3><span class="titem-short">${p.short}</span></span>
 </a></li>`;
-    })
-    .join('')}</ul>
+  };
+  const row = (k) => {
+    const p = byKey[k];
+    return `<li><a class="trow" href="${p.path}"><span class="trow-name">${p.navLabel}</span><span class="trow-short">${p.short}</span><span class="trow-arrow" aria-hidden="true">←</span></a></li>`;
+  };
+  return `<section class="sec" aria-labelledby="${id}">
+${secHead(id, title)}
+${withImg.length ? `<ul class="tgrid">${withImg.map(card).join('')}</ul>` : ''}
+${text.length ? `<ul class="trows container">${text.map(row).join('')}</ul>` : ''}
 </section>`;
 }
 
@@ -189,8 +200,8 @@ function bookingSection(page) {
   const formEnabled = site.form.mode === 'netlify' || Boolean(site.form.action);
   return `<section class="sec book" id="booking" aria-labelledby="booking-h">
 <div class="container"><div class="book-card">
-<h2 id="booking-h">קובעות תור?</h2>
-<p>הכי מהיר בוואטסאפ. כותבות מה בא לך, ומורן חוזרת עם מועד.</p>
+<h2 id="booking-h">רוצה לקבוע תור?</h2>
+<p>הכי נוח בוואטסאפ. כתבי מה בא לך, ומורן חוזרת אלייך עם מועד.</p>
 <div class="stack">${waBtn(page.waText, 'booking', 'כתבי למורן בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
 <dl class="info">
 <div><dt>ימים</dt><dd>${daysText().replace('ימים ', '')}</dd></div>
@@ -331,14 +342,12 @@ function homeMain(p) {
 ${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, sizes: '(min-width: 1000px) 420px, 100vw' })}
 </div>
 <div class="hero-body container">
-<p class="pill">קליניקה פרטית לנשים · ${site.city}</p>
 <h1 id="hero-h">עיסוי לנשים<br>בבית דגן</h1>
-<p class="lead">${p.lead}</p>
 <div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}${bookLink('hero_online') || '<a class="tlink" href="#prices">למחירון</a>'}</div>
 </div>
 </section>
 
-<ul class="why container" aria-label="למה אצל מורן">${p.why.map((w) => `<li><strong>${w.h}</strong><span>${w.p}</span></li>`).join('')}</ul>
+<section class="intro container"><p>${p.intro}</p></section>
 
 ${treatmentRail(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'brows'])}
 ${reviewsRail()}
@@ -354,8 +363,8 @@ function serviceMain(p) {
   return `
 <nav class="crumbs container" aria-label="פירורי לחם"><ol><li><a href="/">בית</a></li><li aria-current="page">${p.navLabel}</li></ol></nav>
 <article>
-<section class="s-hero container" aria-labelledby="hero-h">
-<div class="s-hero-img">${picture(site.images[p.key], p.navLabel, { eager: true, sizes: '(min-width: 1000px) 480px, 100vw' })}</div>
+<section class="s-hero container${site.images[p.key]?.none ? ' s-hero-type' : ''}" aria-labelledby="hero-h">
+${site.images[p.key]?.none ? '' : `<div class="s-hero-img">${picture(site.images[p.key], p.navLabel, { eager: true, sizes: '(min-width: 1000px) 480px, 100vw' })}</div>`}
 <div class="s-hero-body">
 <h1 id="hero-h">${p.h1}</h1>
 <p class="lead">${p.lead}</p>
@@ -365,8 +374,8 @@ function serviceMain(p) {
 </section>
 
 <section class="sec sec-narrow" aria-labelledby="facts-h">
-${secHead('facts-h', 'בקצרה')}
-<ul class="ticks container">${p.bullets.map((b) => `<li><span>${b}</span></li>`).join('')}</ul>
+${secHead('facts-h', 'על הטיפול')}
+<p class="prose container">${p.bullets.join(' ')}</p>
 </section>
 
 ${p.types ? `<section class="sec sec-narrow" aria-labelledby="types-h">
@@ -375,15 +384,15 @@ ${secHead('types-h', p.typesHeading)}
 </section>` : ''}
 
 <section class="sec sec-narrow" aria-labelledby="steps-h">
-${secHead('steps-h', 'איך זה עובד')}
-<ol class="steps container">${p.steps.map((t) => `<li>${t}</li>`).join('')}</ol>
+${secHead('steps-h', 'איך זה מתנהל')}
+<p class="prose container">${p.steps.join(' ')}</p>
 </section>
 
 ${p.priceKeys.length > 1 ? priceSection(p.priceKeys, 'מחיר') : ''}
 ${reviewsRail()}
 ${faqSection(p.faq)}
 </article>
-${treatmentRail(p.related, 'more-h', 'עוד אצל מורן')}
+${treatmentRail(p.related, 'more-h', 'עוד אצל מורן', { lead: false })}
 ${bookingSection(p)}`;
 }
 

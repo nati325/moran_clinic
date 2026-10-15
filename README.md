@@ -36,9 +36,8 @@ node tools/audit.mjs      # בדיקה: קישורים, עוגנים, JSON-LD, H
 
 ## תמונות
 
-- `src/assets/img/`: WebP בכמה גדלים, ו-SVG לאיורי השעווה והגבות.
+- `src/assets/img/`: WebP בכמה גדלים. שירות בלי צילום (`none: true` ב-`config.mjs`) מוצג בטיפוגרפיה בלבד.
 - `tools/straighten_diplomas.py`: מיישר צילומי תעודות לפי המסגרת ומאחד ליחס אחיד (opencv-python-headless).
-- `tools/make_illustrations.py`: מייצר את איורי הקו (SVG). להחליף בצילום אמיתי כשיהיה: ב-`config.mjs` מחליפים את `svg: ...` ב-`name` ו-`widths`.
 - `tools/process_images.py`: חיתוך ותיקון צבע מתוך תיקיית מקורות (לא נשמרת בריפו).
 - `og-image.jpg`: תמונת שיתוף 1200×630.
 

@@ -89,7 +89,7 @@ export const site = {
   reviewSlots: 6, // כמה מקומות ריקים להציג כל עוד אין המלצות
 
   // תמונות WebP בתיקייה src/assets/img (נוצרות עם tools/process_images.py).
-  // name = תחילת שם הקובץ; widths = הגדלים שנוצרו. svg = איור קו. null = מסגרת "מקום לתמונה".
+  // name = תחילת שם הקובץ; widths = הגדלים שנוצרו. none = בלי צילום (השירות מוצג בטיפוגרפיה בלבד). null = מסגרת "מקום לתמונה".
   images: {
     hero: {
       name: 'hero-moran', widths: [720, 1095], width: 1095, height: 1600,
@@ -111,14 +111,9 @@ export const site = {
       name: 'facial-mask', widths: [720, 1200], width: 1200, height: 1500,
       alt: 'מריחת מסכת חימר במכחול על הפנים של מטופלת בטיפול פנים',
     },
-    waxing: {
-      svg: 'illus-waxing', width: 800, height: 1000, pos: '50% 55%',
-      alt: 'איור קו של צנצנת שעווה עם מרית ופרחי קמומיל',
-    },
-    brows: {
-      svg: 'illus-brows', width: 800, height: 1000, pos: '50% 45%',
-      alt: 'איור קו של עין וגבה מעוצבת',
-    },
+    // עד שיהיה צילום טוב: השירות מוצג בטיפוגרפיה בלבד
+    waxing: { none: true },
+    brows: { none: true },
   },
 };
 
