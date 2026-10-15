@@ -5,7 +5,7 @@
 
   // הסרגל הדביק בנייד מופיע רק אחרי שגוללים מעבר לכפתור הראשי
   var sticky = document.querySelector('[data-sticky]');
-  var firstCta = document.querySelector('.hero .btn-wa, .s-hero .btn-wa');
+  var firstCta = document.querySelector('.hero [data-loc="hero"], .s-hero [data-loc="hero"]');
   // (בדיקה לפי מיקום ולא IntersectionObserver: גלילה מהירה שקופצת מעל הכפתור לא מפספסת)
   if (sticky && firstCta) {
     var update = function () {

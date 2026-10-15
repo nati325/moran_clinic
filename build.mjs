@@ -1,5 +1,5 @@
 // בונה את האתר הסטטי לתיקייה dist/.  שימוש: node build.mjs
-// עיצוב mobile-first: hero עם וידאו, כרטיסי טיפולים בהחלקה, מטרה אחת — וואטסאפ.
+// עיצוב mobile-first, מינימליסטי: תמונה גדולה, טיפוגרפיה שקטה, מטרה אחת: וואטסאפ.
 import { mkdir, writeFile, readFile, cp } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -29,8 +29,6 @@ if (PROD) {
   }
   site.massageTraining = '';
 }
-const FONT_CSS =
-  'https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&family=Cinzel:wght@500&display=swap';
 const missingImages = new Map(); // תווית → עמודים
 let currentPath = '/';
 
@@ -91,13 +89,13 @@ const secHead = (id, title, extra = '') => `<div class="sec-head container"><h2 
 
 function treatmentRail(keys, id = 'treatments-h', title = 'הטיפולים') {
   return `<section class="sec" aria-labelledby="${id}">
-${secHead(id, title, '<span class="swipe-hint" aria-hidden="true">החליקי</span>')}
-<ul class="rail">${keys
+${secHead(id, title)}
+<ul class="tgrid">${keys
     .map((k) => {
       const p = byKey[k];
-      return `<li><a class="tcard" href="${p.path}">
-<span class="tcard-img">${picture(site.images[k], p.navLabel, { sizes: '(min-width: 1000px) 260px, 62vw' })}</span>
-<span class="tcard-body"><h3>${p.navLabel}</h3><span class="tcard-short">${p.short}</span><span class="tcard-meta">${meta(k)}</span></span>
+      return `<li><a class="titem" href="${p.path}">
+<span class="titem-img">${picture(site.images[k], p.navLabel, { sizes: '(min-width: 1000px) 220px, (min-width: 720px) 30vw, 100vw' })}</span>
+<span class="titem-body"><h3>${p.navLabel}</h3><span class="titem-short">${p.short}</span><span class="titem-meta">${meta(k)}</span></span>
 </a></li>`;
     })
     .join('')}</ul>
@@ -130,14 +128,14 @@ function priceSection(keys, title = 'מחירון') {
     .map((k) => {
       const s = S[k];
       const note = s.note ? `<small>${s.note}</small>` : '';
-      return `<tr><th scope="row"><a href="${s.path}">${s.name}</a>${note}</th><td>${durShort(s)}</td><td class="pr">${price(s)}</td></tr>`;
+      return `<tr><th scope="row"><a href="${s.path}">${s.name}</a>${note}</th><td class="pr">${price(s)}</td></tr>`;
     })
     .join('');
   return `<section class="sec" id="prices" aria-labelledby="prices-h">
 ${secHead('prices-h', title)}
 <div class="container"><table class="prices">
 <caption class="sr">מחירי הטיפולים בקליניקה של מורן מדר ב${site.city}</caption>
-<thead class="sr"><tr><th scope="col">טיפול</th><th scope="col">משך</th><th scope="col">מחיר</th></tr></thead>
+<thead class="sr"><tr><th scope="col">טיפול</th><th scope="col">מחיר</th></tr></thead>
 <tbody>${rows}</tbody></table></div>
 </section>`;
 }
@@ -167,7 +165,10 @@ ${picture(site.images.therapist, 'מורן בעבודה', { cls: 'about-img', si
 ${site.massageTraining ? `<p class="small">${site.massageTraining}</p>` : ''}
 </div>
 </div>
+<div class="container"><details class="certs">
+<summary>הסמכות והכשרה</summary>
 <ul class="rail rail-certs">${certs}</ul>
+</details></div>
 </section>`;
 }
 
@@ -186,13 +187,13 @@ function bookingSection(page) {
 <div class="container"><div class="book-card">
 <h2 id="booking-h">קובעות תור?</h2>
 <p>הכי מהיר בוואטסאפ. כותבות מה בא לך, ומורן חוזרת עם מועד.</p>
-<div class="stack">${waBtn(page.waText, 'booking', 'כתבי למורן בוואטסאפ', 'btn btn-wa btn-lg')}${telBtn('booking', 'btn btn-line-light')}</div>
+<div class="stack">${waBtn(page.waText, 'booking', 'כתבי למורן בוואטסאפ', 'btn btn-wa btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
 <dl class="info">
 <div><dt>ימים</dt><dd>${daysText().replace('ימים ', '')}</dd></div>
 <div><dt>שעות</dt><dd>${hoursHtml()}</dd></div>
 <div><dt>כתובת</dt><dd>${fullAddress()}</dd></div>
 </dl>
-<div class="nav-to"><a href="${esc(wazeUrl)}" target="_blank" rel="noopener" data-loc="waze">${icon.pin}Waze</a><a href="${esc(mapsUrl)}" target="_blank" rel="noopener" data-loc="maps">${icon.pin}Google Maps</a></div>
+<div class="nav-to"><a href="${esc(wazeUrl)}" target="_blank" rel="noopener" data-loc="waze">Waze</a><a href="${esc(mapsUrl)}" target="_blank" rel="noopener" data-loc="maps">Google Maps</a></div>
 <details class="form-wrap">
 <summary>או השאירי פרטים ונחזור אלייך</summary>
 <form class="form" name="booking" method="POST" action="${esc(site.form.action)}" data-booking-form${netlify}>
@@ -223,7 +224,7 @@ function header(page) {
     .join('');
   return `<header class="top">
 <div class="container top-bar">
-<a class="brand" href="/" aria-label="${site.businessName}, עמוד הבית"><span class="brand-en" aria-hidden="true">MORAN MADAR</span><span class="brand-he">${site.businessName} · ${site.city}</span></a>
+<a class="brand" href="/" aria-label="${site.businessName}, עמוד הבית"><span class="brand-en" aria-hidden="true">MORAN MADAR</span></a>
 <nav class="nav-desk" aria-label="ניווט ראשי"><ul>${links}</ul></nav>
 ${waBtn(page.waText, 'header', 'קביעת תור', 'btn btn-wa btn-sm head-cta')}
 <details class="menu">
@@ -252,7 +253,7 @@ function footer() {
 
 function stickyBar(page) {
   return `<div class="sticky" data-sticky>
-${waBtn(page.waText, 'sticky', 'קביעת תור בוואטסאפ', 'btn btn-wa')}
+${waBtn(page.waText, 'sticky', 'קביעת תור בוואטסאפ', 'btn btn-light')}
 <a class="sticky-tel" href="${telLink}" data-loc="sticky" aria-label="חיוג ל-${site.phoneDisplay}">${icon.phone}</a>
 </div>`;
 }
@@ -286,12 +287,10 @@ ${page.noindex ? '<meta name="robots" content="noindex, follow">\n' : ''}<meta p
 <meta property="og:description" content="${esc(page.description)}">
 <meta property="og:url" content="${canonical}">
 <meta property="og:image" content="${ogImg}">
-<meta name="theme-color" content="#1c1410">
+<meta name="theme-color" content="#1e1a16">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="${FONT_CSS}" media="print" onload="this.media='all'">
-<noscript><link rel="stylesheet" href="${FONT_CSS}"></noscript>
+<link rel="preload" href="/assets/fonts/Heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/FrankRuhlLibre-hebrew.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${CSS_URL}">
 ${analyticsHead(page)}
 ${schemas.map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join('\n')}
@@ -321,8 +320,7 @@ ${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, siz
 <p class="pill">קליניקה פרטית לנשים · ${site.city}</p>
 <h1 id="hero-h">עיסוי לנשים<br>בבית דגן</h1>
 <p class="lead">${p.lead}</p>
-<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}<a class="btn btn-ghost" href="#prices">למחירון</a></div>
-<ul class="chips"><li>${S.massage.name} · ${price(S.massage)}</li><li>נשים בלבד</li></ul>
+<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}<a class="tlink" href="#prices">למחירון</a></div>
 </div>
 </section>
 
@@ -354,12 +352,12 @@ function serviceMain(p) {
 
 <section class="sec" aria-labelledby="facts-h">
 ${secHead('facts-h', 'בקצרה')}
-<ul class="ticks container">${p.bullets.map((b) => `<li>${icon.check}<span>${b}</span></li>`).join('')}</ul>
+<ul class="ticks container">${p.bullets.map((b) => `<li><span>${b}</span></li>`).join('')}</ul>
 </section>
 
 ${p.types ? `<section class="sec" aria-labelledby="types-h">
 ${secHead('types-h', p.typesHeading)}
-<ul class="rail rail-types">${p.types.map((t) => `<li class="type"><h3>${t.h}</h3><p>${t.p}</p></li>`).join('')}</ul>
+<ul class="types container">${p.types.map((t) => `<li class="type"><h3>${t.h}</h3><p>${t.p}</p></li>`).join('')}</ul>
 </section>` : ''}
 
 <section class="sec" aria-labelledby="steps-h">
