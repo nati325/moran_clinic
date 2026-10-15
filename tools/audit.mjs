@@ -11,7 +11,7 @@ async function walk(dir) {
   const out = [];
   for (const e of await readdir(dir, { withFileTypes: true })) {
     const p = join(dir, e.name);
-    if (e.isDirectory()) out.push(...(await walk(p)));
+    if (e.isDirectory()) { if (e.name !== 'admin') out.push(...(await walk(p))); } // אפליקציית הניהול אינה עמוד ציבורי
     else if (e.name.endsWith('.html')) out.push(p);
   }
   return out;

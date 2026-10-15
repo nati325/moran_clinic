@@ -9,6 +9,8 @@ src/config.mjs    ← פרטי העסק, מחירים, שעות, מזהי מדי
 src/content.mjs   ← הטקסטים של כל עמוד + שאלות נפוצות
 src/assets/       ← styles.css, site.js, fonts/ (מתארחים באתר), img/
 src/static/       ← favicon, אייקונים, _headers (מועתקים כמו שהם)
+src/admin/        ← אפליקציית הניהול של מורן (/admin/)
+api/              ← פונקציות Vercel: התחברות, לקוחות, תורים, הגדרות, מדידה, webhook
 build.mjs         ← מייצר את dist/: עמודים, 404, sitemap.xml, robots.txt, llms.txt
 vercel.json       ← בנייה, תיקיית פלט וכותרות אבטחה ל-Vercel
 netlify.toml      ← אותו דבר ל-Netlify (הכותרות ב-src/static/_headers)
@@ -51,6 +53,36 @@ node tools/audit.mjs      # בדיקה: קישורים, עוגנים, JSON-LD, H
 - מגישים את `sitemap.xml` ב-Google Search Console.
 - בודקים את ה-schema ב-https://search.google.com/test/rich-results
 - פותחים את הקונסולה ובודקים שאין חסימות של ה-CSP (`vercel.json` / `_headers`).
+
+## אפליקציית ניהול למורן (/admin/)
+
+אפליקציית ווב (PWA) שאפשר להתקין על מסך הבית בטלפון. כניסה בסיסמה אחת. כוללת:
+- **היום ויומן:** תורים, הוספה ידנית, סימון "בוצע". תורים מ-Cal.com נכנסים לבד (webhook).
+- **לקוחות:** כרטיס עם טלפון, הערות והיסטוריית טיפולים, וכפתורי וואטסאפ וחיוג.
+- **האתר:** שינוי מחירים ושעות פעילות, וכפתור "פרסום לאתר" שבונה אותו מחדש.
+- **סטטיסטיקה:** צפיות ולחיצות על וואטסאפ, טלפון ויומן (מונים בלבד, בלי עוגיות ובלי מזהים אישיים).
+
+הקוד: `src/admin/` (הממשק), `api/` (פונקציות Vercel), `api/_lib/` (אחסון, התחברות ועזרים).
+
+**הקמה ב-Vercel (חד-פעמי):**
+1. Storage / Marketplace ← **Upstash Redis** (יש תוכנית חינמית) ← חיבור לפרויקט. המשתנים `KV_REST_API_URL` ו-`KV_REST_API_TOKEN` (או `UPSTASH_REDIS_REST_*`) נוספים אוטומטית.
+2. Settings ← Environment Variables:
+   - `ADMIN_PASSWORD`: הסיסמה של מורן (ארוכה).
+   - `SESSION_SECRET`: מחרוזת אקראית של 32 תווים ומעלה. החלפתה מנתקת את כל המכשירים.
+   - `DEPLOY_HOOK_URL`: ל"פרסום לאתר". יוצרים ב-Settings ← Git ← Deploy Hooks (ענף `main`).
+   - `CAL_WEBHOOK_SECRET`: סוד כלשהו, זהה לזה שמגדירים ב-Cal.com.
+3. Redeploy. נכנסים ל-`https://<הדומיין>/admin/` ואז "הוסף למסך הבית".
+4. ב-Cal.com: Settings ← Developer ← Webhooks ← כתובת `https://<הדומיין>/api/cal-webhook`, אירועים: Booking Requested / Created / Rescheduled / Cancelled / Rejected, ו-Secret כאמור.
+   אחרי הבקשה הראשונה אפשר לראות מה Cal.com שלח ב-`/api/settings?calog=1` (כשמחוברים), ולוודא שהשדות (טלפון, הערות) נקלטו נכון.
+
+**פיתוח מקומי:**
+```bash
+node build.mjs --prod
+ADMIN_PASSWORD=test SESSION_SECRET=0123456789abcdef0123 ADMIN_LOCAL_DB=.data/db.json \
+  CAL_WEBHOOK_SECRET=x node tools/dev-server.mjs 8090   # http://localhost:8090/admin/
+```
+
+**איך מחירים ושעות מגיעים לאתר:** האפליקציה שומרת הגדרות במסד הנתונים. בכל בנייה (`build.mjs`) הן נקראות ומחליפות את הערכים שב-`config.mjs` (במחירים, בכותרות, ב-schema ובשעות). אם המסד לא זמין, הבנייה ממשיכה עם הערכים שבקוד.
 
 ## טופס יצירת קשר (אופציונלי)
 

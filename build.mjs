@@ -415,7 +415,7 @@ function businessSchema() {
     name: site.businessName,
     url: abs('/'),
     telephone: site.phoneIntl,
-    priceRange: '100–350 ₪',
+    priceRange: (() => { const n = Object.values(S).map((x) => x.price).filter(Boolean); return `${Math.min(...n)}–${Math.max(...n)} ₪`; })(),
     image: abs(`/assets/img/${site.images.hero.name}-${site.images.hero.widths.at(-1)}.webp`),
     address: {
       '@type': 'PostalAddress',
@@ -499,10 +499,12 @@ ${indexable.map((p) => `  <url><loc>${abs(p.path)}</loc><lastmod>${today}</lastm
 function robots() {
   const bots = ['GPTBot', 'OAI-SearchBot', 'ChatGPT-User', 'ClaudeBot', 'Claude-User', 'PerplexityBot', 'Google-Extended', 'Bingbot', 'Applebot-Extended'];
   return `# מנועי חיפוש ומנועי AI — מותרים במפורש
-${bots.map((b) => `User-agent: ${b}\nAllow: /\nDisallow: /thank-you/\n`).join('\n')}
+${bots.map((b) => `User-agent: ${b}\nAllow: /\nDisallow: /thank-you/\nDisallow: /admin/\nDisallow: /api/\n`).join('\n')}
 User-agent: *
 Allow: /
 Disallow: /thank-you/
+Disallow: /admin/
+Disallow: /api/
 
 Sitemap: ${abs('/sitemap.xml')}
 `;
@@ -548,6 +550,22 @@ async function write(path, content) {
 await mkdir(OUT, { recursive: true });
 await cp('src/assets', join(OUT, 'assets'), { recursive: true, force: true });
 await cp('src/static', OUT, { recursive: true, force: true });
+
+// אפליקציית הניהול של מורן (/admin/): קבצים סטטיים, וה-API בתיקיית api/
+await cp('src/admin', join(OUT, 'admin'), { recursive: true, force: true });
+const adminVer = (f) => ver(`src/admin/${f}`);
+await write(
+  'admin/index.html',
+  readFileSync('src/admin/index.html', 'utf8')
+    .replace('__CSS__', CSS_URL)
+    .replace('__ACSS__', `/admin/admin.css?v=${adminVer('admin.css')}`)
+    .replace('__JS__', `/admin/admin.js?v=${adminVer('admin.js')}`),
+);
+await write('admin/meta.json', JSON.stringify({
+  services: Object.entries(S).map(([key, s]) => ({ key, name: s.name, price: s.price ?? null, duration: s.duration ?? 60 })),
+  hours: site.hours,
+}));
+
 
 const biz = businessSchema();
 for (const p of allPages) {

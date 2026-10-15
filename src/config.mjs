@@ -4,6 +4,8 @@
 // הבנייה מדפיסה בסוף רשימה של כל ה-placeholders והתמונות שחסרים.
 // ─────────────────────────────────────────────────────────────
 
+import { loadOverrides } from '../api/_lib/overrides.js';
+
 export const site = {
   // הדומיין הסופי, בלי / בסוף. משמש ל-canonical, sitemap ו-schema.
   url: 'https://www.example.co.il',
@@ -153,3 +155,16 @@ export const services = {
   },
   brows: { name: 'עיצוב גבות + שפם', duration: 20, price: 100, path: '/eyebrows/' },
 };
+
+// בזמן הבנייה: מחירים ושעות פעילות שמורן עדכנה באפליקציית הניהול (אם האחסון מחובר).
+// כל כשל כאן לא מפיל את הבנייה: האתר נבנה עם הערכים שבקובץ הזה.
+try {
+  const ov = await loadOverrides();
+  if (ov) {
+    for (const [k, v] of Object.entries(ov.prices || {})) if (services[k]) services[k].price = v;
+    if (ov.hours) site.hours = { ...site.hours, ...ov.hours };
+    console.log('הוחלו הגדרות מאפליקציית הניהול (מחירים/שעות)');
+  }
+} catch (e) {
+  console.warn(`⚠ לא נטענו הגדרות מאפליקציית הניהול: ${e.message}`);
+}

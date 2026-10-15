@@ -15,7 +15,20 @@
     update();
   }
 
+  // מדידה פנימית: מונים בלבד (בלי עוגיות ובלי מזהים), למסך הסטטיסטיקה באפליקציית הניהול
+  var COUNTED = { click_whatsapp: 1, click_phone: 1, click_booking: 1 };
+  function beacon(name, loc) {
+    try {
+      if (localStorage.getItem('mm_notrack') || navigator.doNotTrack === '1' || !navigator.sendBeacon) return;
+      var p = location.pathname.replace(/index\.html$/, '');
+      if (p.slice(-1) !== '/') p += '/';
+      navigator.sendBeacon('/api/track', new Blob([JSON.stringify({ e: name, l: loc || '', p: p })], { type: 'application/json' }));
+    } catch (err) {}
+  }
+  beacon('pv');
+
   function track(name, params) {
+    if (COUNTED[name]) beacon(name, params && params.link_location);
     if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
   }
 
