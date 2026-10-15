@@ -98,7 +98,7 @@ export const site = {
       alt: 'ידיים מעסות כתפיים וגב בעיסוי גוף',
     },
     facialMassage: {
-      name: 'facial-relax', widths: [640, 1000], width: 1000, height: 1250, pos: '50% 45%',
+      name: 'facial-relax', widths: [640, 1000], width: 1000, height: 1250, pos: '30% 45%',
       alt: 'אישה שוכבת בעיניים עצומות ברגיעה, ויד תומכת בראשה',
     },
     facialTreatment: {

@@ -365,7 +365,7 @@ ${secHead('steps-h', 'איך זה עובד')}
 <ol class="steps container">${p.steps.map((t) => `<li>${t}</li>`).join('')}</ol>
 </section>
 
-${priceSection(p.priceKeys, 'מחיר')}
+${p.priceKeys.length > 1 ? priceSection(p.priceKeys, 'מחיר') : ''}
 ${reviewsRail()}
 ${faqSection(p.faq)}
 </article>

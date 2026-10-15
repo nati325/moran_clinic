@@ -122,7 +122,7 @@ p { margin: 0; }
 
 /* גריד הטיפולים: הראשון בגדול, והשאר בזוגות */
 .tgrid { list-style: none; margin: 0 auto; padding: 0 var(--pad); display: grid; grid-template-columns: 1fr 1fr; gap: 40px 14px; max-width: 1120px; }
-.tgrid > li:first-child:nth-last-child(5) { grid-column: 1 / -1; }
+.tgrid > li:first-child:nth-last-child(5), .tgrid > li:first-child:nth-last-child(3) { grid-column: 1 / -1; }
 .titem { display: block; text-decoration: none; }
 .titem-img { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--line); }
 .titem-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease); }
@@ -130,8 +130,8 @@ p { margin: 0; }
 .titem-body { display: grid; gap: 3px; padding-top: 16px; }
 .titem h3 { font-size: 1.2rem; line-height: 1.25; }
 .titem-short { font-size: .8rem; line-height: 1.55; color: var(--muted); }
-.tgrid > li:first-child:nth-last-child(5) h3 { font-size: 1.6rem; }
-.tgrid > li:first-child:nth-last-child(5) .titem-short { font-size: .9rem; }
+.tgrid > li:first-child:nth-last-child(5) h3, .tgrid > li:first-child:nth-last-child(3) h3 { font-size: 1.6rem; }
+.tgrid > li:first-child:nth-last-child(5) .titem-short, .tgrid > li:first-child:nth-last-child(3) .titem-short { font-size: .9rem; }
 
 /* המלצות */
 .rail { list-style: none; margin: 0 auto; padding: 2px var(--pad) 10px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1120px; }
@@ -271,9 +271,9 @@ p { margin: 0; }
 @media (min-width: 720px) {
   :root { --pad: 36px; }
   .tgrid { grid-template-columns: repeat(3, 1fr); }
-  .tgrid > li:first-child:nth-last-child(5) { grid-column: auto; }
-  .tgrid > li:first-child:nth-last-child(5) h3 { font-size: 1.2rem; }
-  .tgrid > li:first-child:nth-last-child(5) .titem-short { font-size: .8rem; }
+  .tgrid > li:first-child:nth-last-child(5), .tgrid > li:first-child:nth-last-child(3) { grid-column: auto; }
+  .tgrid > li:first-child:nth-last-child(5) h3, .tgrid > li:first-child:nth-last-child(3) h3 { font-size: 1.2rem; }
+  .tgrid > li:first-child:nth-last-child(5) .titem-short, .tgrid > li:first-child:nth-last-child(3) .titem-short { font-size: .8rem; }
   .rail > li { flex-basis: 38%; }
   .rail-reviews > li { flex-basis: 28%; }
   .rail-certs > li { flex-basis: 42%; }
