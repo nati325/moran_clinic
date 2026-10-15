@@ -66,9 +66,6 @@ const waBtn = (text, loc, label = 'קביעת תור בוואטסאפ', cls = 'b
 const telBtn = (loc, cls = 'btn btn-soft') =>
   `<a class="${cls}" href="${telLink}" data-loc="${loc}">${icon.phone}<span dir="ltr">${site.phoneDisplay}</span></a>`;
 
-// בכרטיס מוצג מחיר בלבד, בלי זמנים
-const meta = (k) => price(S[k]);
-
 function picture(o, label, { cls = '', eager = false, sizes = '(min-width: 1000px) 40vw, 100vw' } = {}) {
   if (o?.svg) {
     const pos = o.pos ? ` style="object-position:${o.pos}"` : '';
@@ -95,7 +92,7 @@ ${secHead(id, title)}
       const p = byKey[k];
       return `<li><a class="titem" href="${p.path}">
 <span class="titem-img">${picture(site.images[k], p.navLabel, { sizes: '(min-width: 1000px) 220px, (min-width: 720px) 30vw, 100vw' })}</span>
-<span class="titem-body"><h3>${p.navLabel}</h3><span class="titem-short">${p.short}</span><span class="titem-meta">${meta(k)}</span></span>
+<span class="titem-body"><h3>${p.navLabel}</h3><span class="titem-short">${p.short}</span></span>
 </a></li>`;
     })
     .join('')}</ul>
@@ -241,8 +238,11 @@ function footer() {
 <div class="container">
 <p class="foot-brand" aria-hidden="true">MORAN MADAR</p>
 <address>
-<strong>${site.businessName}</strong> · ${site.street}, ${site.city}<br>
-<a href="${telLink}" data-loc="footer" dir="ltr">${site.phoneDisplay}</a> · ${daysText()}, ${hoursHtml()}
+<strong>${site.businessName}</strong>
+<span>${site.street}, ${site.city}</span>
+<a href="${telLink}" data-loc="footer" dir="ltr">${site.phoneDisplay}</a>
+<span>${daysText()}</span>
+<span>${hoursHtml()}</span>
 </address>
 <p class="foot-links"><a href="${site.instagram}" target="_blank" rel="noopener">${icon.ig}<bdi dir="ltr">${site.instagramHandle}</bdi></a></p>
 <nav aria-label="טיפולים"><ul>${servicePages.map((p) => `<li><a href="${p.path}">${p.navLabel}</a></li>`).join('')}</ul></nav>
