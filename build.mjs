@@ -158,7 +158,7 @@ ${picture(site.images.therapist, 'מורן בעבודה', { cls: 'about-img', si
 <div class="about-text">
 <p class="kicker">המטפלת</p>
 <h2 id="about-h">${site.therapistName}</h2>
-<p>קוסמטיקאית ומעסה. מטפלת בנשים בלבד, בקליניקה פרטית ב${site.city}.</p>
+<p>קוסמטיקאית ומעסה${site.experience ? `, ${site.experience} בתחום` : ''}. מטפלת בנשים בלבד, בקליניקה פרטית ב${site.city}.</p>
 ${site.massageTraining ? `<p class="small">${site.massageTraining}</p>` : ''}
 </div>
 </div>
