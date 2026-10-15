@@ -63,6 +63,10 @@ const icon = {
 const waBtn = (text, loc, label = 'קביעת תור בוואטסאפ', cls = 'btn btn-wa') =>
   `<a class="${cls}" href="${esc(waLink(text))}" target="_blank" rel="noopener" data-loc="${loc}">${icon.wa}<span>${label}</span></a>`;
 
+// קישור ליומן ההזמנות (Cal.com): מורן מאשרת כל תור. וואטסאפ נשאר הדרך הראשית.
+const bookLink = (loc, cls = 'tlink', label = 'קביעת תור אונליין') =>
+  site.bookingUrl ? `<a class="${cls}" href="${esc(site.bookingUrl)}" target="_blank" rel="noopener" data-loc="${loc}" data-booking>${label}</a>` : '';
+
 const telBtn = (loc, cls = 'btn btn-soft') =>
   `<a class="${cls}" href="${telLink}" data-loc="${loc}">${icon.phone}<span dir="ltr">${site.phoneDisplay}</span></a>`;
 
@@ -187,7 +191,7 @@ function bookingSection(page) {
 <div class="container"><div class="book-card">
 <h2 id="booking-h">קובעות תור?</h2>
 <p>הכי מהיר בוואטסאפ. כותבות מה בא לך, ומורן חוזרת עם מועד.</p>
-<div class="stack">${waBtn(page.waText, 'booking', 'כתבי למורן בוואטסאפ', 'btn btn-wa btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
+<div class="stack">${waBtn(page.waText, 'booking', 'כתבי למורן בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
 <dl class="info">
 <div><dt>ימים</dt><dd>${daysText().replace('ימים ', '')}</dd></div>
 <div><dt>שעות</dt><dd>${hoursHtml()}</dd></div>
@@ -330,7 +334,7 @@ ${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, siz
 <p class="pill">קליניקה פרטית לנשים · ${site.city}</p>
 <h1 id="hero-h">עיסוי לנשים<br>בבית דגן</h1>
 <p class="lead">${p.lead}</p>
-<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}<a class="tlink" href="#prices">למחירון</a></div>
+<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}${bookLink('hero_online') || '<a class="tlink" href="#prices">למחירון</a>'}</div>
 </div>
 </section>
 
@@ -356,7 +360,7 @@ function serviceMain(p) {
 <h1 id="hero-h">${p.h1}</h1>
 <p class="lead">${p.lead}</p>
 <ul class="chips chips-light">${chips.map((c) => `<li>${c}</li>`).join('')}</ul>
-<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}</div>
+<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('hero_online')}</div>
 </div>
 </section>
 
