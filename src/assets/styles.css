@@ -115,7 +115,7 @@ p { margin: 0; }
 .why span { font-size: .74rem; line-height: 1.45; color: var(--muted); }
 
 /* ── סקשנים ── */
-.sec { padding-top: 96px; }
+.sec { padding-top: 72px; }
 .sec-head { margin-bottom: 38px; }
 .sec-head h2 { font-size: clamp(1.9rem, 8.5vw, 2.5rem); line-height: 1.12; }
 .sec-head h2::before { content: ''; display: block; width: 32px; height: 1px; background: var(--bronze); margin-bottom: 16px; }
@@ -185,7 +185,7 @@ p { margin: 0; }
 .faq details p { padding: 0 0 24px; color: var(--muted); font-size: .95rem; }
 
 /* ── קביעת תור ── */
-.book { margin-top: 96px; padding: 92px 0 76px; background: var(--dark); color: var(--on-dark); text-align: center; }
+.book { margin-top: 72px; padding: 80px 0 64px; background: var(--dark); color: var(--on-dark); text-align: center; }
 .book-card { max-width: 520px; margin-inline: auto; }
 .book-card h2 { font-size: clamp(2.3rem, 11vw, 3.2rem); font-weight: 300; line-height: 1.05; }
 .book-card > p { margin: 18px auto 38px; max-width: 28ch; color: var(--on-dark-dim); }
@@ -214,11 +214,11 @@ p { margin: 0; }
 .hp { position: absolute; inset-inline-start: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ── עמוד שירות ── */
-.crumbs ol { list-style: none; display: flex; gap: 8px; margin: 0; padding: 0; font-size: .76rem; color: var(--muted); }
+.crumbs ol { list-style: none; display: flex; gap: 8px; margin: 0; padding: 0; font-size: .84rem; color: var(--ink); opacity: .8; }
 .crumbs li + li::before { content: '/'; margin-inline-end: 8px; opacity: .6; }
-.crumbs a { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
+.crumbs a { text-decoration: none; display: inline-flex; align-items: center; min-height: 48px; padding-inline-end: 4px; }
 .crumbs { padding-block: 0 4px; }
-.s-hero-img { aspect-ratio: 4 / 5; max-height: 76svh; margin-inline: calc(var(--pad) * -1); overflow: hidden; background: var(--line); }
+.s-hero-img { aspect-ratio: 5 / 4; margin-inline: calc(var(--pad) * -1); overflow: hidden; background: var(--line); }
 .s-hero-img img { width: 100%; height: 100%; object-fit: cover; }
 .s-hero-body { padding-block: 38px 0; }
 .s-hero h1 { font-size: clamp(2.1rem, 9.5vw, 3rem); line-height: 1.1; font-weight: 400; }
@@ -258,6 +258,7 @@ p { margin: 0; }
 .foot-links { margin: 14px 0; }
 .foot-links a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
 .foot ul { list-style: none; padding: 0; margin: 18px auto 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; max-width: 320px; }
+.foot li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .foot ul a { display: flex; align-items: center; justify-content: center; min-height: 48px; border-top: 1px solid var(--rule-dark); }
 .copy { font-size: .76rem; opacity: .7; }
 
@@ -306,6 +307,7 @@ p { margin: 0; }
   .why { max-width: 760px; padding-block: 48px 0; }
 
   .sec { padding-top: 128px; }
+  .book { margin-top: 128px; }
   .sec-head h2 { font-size: 2.8rem; }
   .tgrid { grid-template-columns: repeat(5, 1fr); gap: 0 20px; }
   .tgrid:has(> li:nth-child(-n+3):last-child) { grid-template-columns: repeat(3, 1fr); }
