@@ -562,6 +562,18 @@ for (const p of allPages) {
   const file = p.path === '/' ? 'index.html' : p.path.slice(1) + 'index.html';
   await write(file, layout(p, main, schemas));
 }
+// עמוד 404: נבנה עם אותו שלד ואותה גרסת CSS כמו שאר האתר (לא נכנס ל-sitemap)
+const notFound = {
+  key: 'notFound', path: '/404.html', title: 'העמוד לא נמצא | מורן מדר', description: 'העמוד שחיפשת לא נמצא.',
+  noindex: true, waText: 'היי מורן, אשמח לקבוע תור',
+};
+currentPath = notFound.path;
+await write('404.html', layout(notFound, `
+<section class="thanks container">
+<h1>העמוד לא נמצא</h1>
+<p class="lead">אולי הקישור השתנה. אפשר לחזור לעמוד הבית או לכתוב למורן ישירות.</p>
+<div class="stack">${waBtn(notFound.waText, 'not_found', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}<a class="tlink" href="/">לעמוד הבית</a></div>
+</section>`, []));
 await write('sitemap.xml', sitemap());
 await write('robots.txt', robots());
 await write('llms.txt', llmsTxt());

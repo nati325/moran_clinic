@@ -62,6 +62,8 @@ p { margin: 0; }
 .btn-wa:hover { background: var(--cta-dark); }
 .btn-light { background: var(--on-dark); color: var(--ink); }
 .btn-light:hover { background: #fff; }
+.btn-soft { border-color: var(--ink); color: var(--ink); }
+.btn-soft:hover { background: var(--ink); color: var(--bg); }
 .btn-lg { width: 100%; min-height: 58px; }
 .btn-sm { min-height: 40px; padding: 0 20px; font-size: .86rem; }
 .tlink { display: inline-block; font-size: .9rem; letter-spacing: .02em; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px; padding: 10px 4px; }
