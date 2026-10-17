@@ -27,6 +27,19 @@
   }
   beacon('pv');
 
+  // חשיפה עדינה בגלילה. בלי IntersectionObserver או בלי JS הכול פשוט גלוי.
+  var rvSel = '.intro, .band, .sec-head, .sx-list li, .about-card, .faq, .book-card, .s-hero-body, .prose, .types, .prices';
+  var rvEls = document.querySelectorAll(rvSel);
+  if (window.__rv) clearTimeout(window.__rv);
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    Array.prototype.forEach.call(rvEls, function (el) { io.observe(el); });
+  } else {
+    document.documentElement.className = 'js rv-off';
+  }
+
   function track(name, params) {
     if (COUNTED[name]) beacon(name, params && params.link_location);
     if (typeof window.gtag === 'function') window.gtag('event', name, params || {});

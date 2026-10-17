@@ -89,28 +89,18 @@ function picture(o, label, { cls = '', eager = false, sizes = '(min-width: 1000p
 
 const secHead = (id, title, extra = '') => `<div class="sec-head container"><h2 id="${id}">${title}</h2>${extra}</div>`;
 
-// הטיפולים: צילום גדול לראשון, זוג צילומים, והשאר כשורות טקסט (שירות בלי צילום לא מקבל קישוט)
-function treatmentRail(keys, id = 'treatments-h', title = 'הטיפולים', { lead = true } = {}) {
-  const hasImg = (k) => site.images[k] && !site.images[k].none;
-  const withImg = keys.filter(hasImg);
-  const text = keys.filter((k) => !hasImg(k));
-  const bigFirst = lead && withImg.length >= 3;
-  const card = (k, i) => {
-    const p = byKey[k];
-    const big = bigFirst && i === 0;
-    return `<li${big ? ' class="tx-lead"' : ''}><a class="titem" href="${p.path}">
-<span class="titem-img">${picture(site.images[k], p.navLabel, { sizes: big ? '(min-width: 1000px) 360px, 100vw' : '(min-width: 1000px) 360px, 50vw' })}</span>
-<span class="titem-body"><h3>${p.navLabel}</h3><span class="titem-short">${p.short}</span></span>
-</a></li>`;
-  };
-  const row = (k) => {
-    const p = byKey[k];
-    return `<li><a class="trow" href="${p.path}"><span class="trow-name">${p.navLabel}</span><span class="trow-short">${p.short}</span><span class="trow-arrow" aria-hidden="true">←</span></a></li>`;
-  };
-  return `<section class="sec" aria-labelledby="${id}">
-${secHead(id, title)}
-${withImg.length ? `<ul class="tgrid">${withImg.map(card).join('')}</ul>` : ''}
-${text.length ? `<ul class="trows container">${text.map(row).join('')}</ul>` : ''}
+// אינדקס הטיפולים: רשימה אחת אחידה (מספר, שם, שורה, מחיר). בלי כרטיסי תמונה שונים זה מזה.
+const INDEX_SUB = { waxing: 'כל הגוף, או אזורים לבחירה', brows: '20 דקות' };
+function serviceIndex(keys, id = 'services', title = 'הטיפולים') {
+  const rows = keys
+    .map((k, i) => {
+      const p = byKey[k];
+      return `<li><a class="sx" href="${p.path}"><span class="sx-n" aria-hidden="true">${String(i + 1).padStart(2, '0')}</span><span class="sx-t"><span class="sx-name">${p.navLabel}</span><span class="sx-sub">${INDEX_SUB[k] ?? p.short}</span></span><span class="sx-p">${price(S[k])}</span><span class="sx-a" aria-hidden="true">←</span></a></li>`;
+    })
+    .join('');
+  return `<section class="sec" id="${id}" aria-labelledby="${id}-h">
+${secHead(`${id}-h`, title)}
+<ol class="sx-list container">${rows}</ol>
 </section>`;
 }
 
@@ -316,6 +306,7 @@ ${page.noindex ? '<meta name="robots" content="noindex, follow">\n' : ''}<meta p
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/Heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/FrankRuhlLibre-hebrew.woff2" as="font" type="font/woff2" crossorigin>
+<script>document.documentElement.className='js';window.__rv=setTimeout(function(){document.documentElement.className='js rv-off'},4000)</script>
 <link rel="stylesheet" href="${CSS_URL}">
 ${analyticsHead(page)}
 ${schemas.map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join('\n')}
@@ -336,23 +327,27 @@ ${page.noindex ? '' : stickyBar(page)}
 
 function homeMain(p) {
   const h = site.images.hero;
+  const band = site.images.massage;
   return `
 <section class="hero" aria-labelledby="hero-h">
 <div class="hero-media">
-${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, sizes: '(min-width: 1000px) 420px, 100vw' })}
+${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, sizes: '(min-width: 1000px) 50vw, 100vw' })}
 </div>
 <div class="hero-body container">
+<p class="eyebrow">קליניקה פרטית לנשים · ${site.city}</p>
 <h1 id="hero-h">עיסוי לנשים<br>בבית דגן</h1>
-<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}${bookLink('hero_online') || '<a class="tlink" href="#prices">למחירון</a>'}</div>
+<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}${bookLink('hero_online') || '<a class="tlink" href="#services">לטיפולים ולמחירים</a>'}</div>
 </div>
 </section>
 
-<section class="intro container"><p>${p.intro}</p></section>
+<section class="intro container rv"><p>${p.intro}</p></section>
 
-${treatmentRail(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'brows'])}
+${serviceIndex(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'brows'])}
+
+<figure class="band rv">${picture(band, band.alt, { cls: 'band-img', sizes: '100vw' })}</figure>
+
 ${reviewsRail()}
 ${aboutSection()}
-${priceSection(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'waxingParts', 'brows'])}
 ${faqSection(p.faq)}
 ${bookingSection(p)}`;
 }
@@ -392,7 +387,7 @@ ${p.priceKeys.length > 1 ? priceSection(p.priceKeys, 'מחיר') : ''}
 ${reviewsRail()}
 ${faqSection(p.faq)}
 </article>
-${treatmentRail(p.related, 'more-h', 'עוד אצל מורן', { lead: false })}
+${serviceIndex(p.related, 'more', 'עוד אצל מורן')}
 ${bookingSection(p)}`;
 }
 

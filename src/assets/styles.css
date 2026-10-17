@@ -12,8 +12,8 @@
   --muted: #6a5f55;
   --line: #ded4c7;
   --bronze: #7d5f43;
-  --cta: #2d4336;
-  --cta-dark: #223429;
+  --cta: #1e1a16;
+  --cta-dark: #3a332c;
   --dark: #1e1a16;
   --on-dark: #ece4d8;
   --on-dark-dim: #a89d8f;
@@ -35,13 +35,13 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font: 400 1rem/1.75 var(--sans);
+  font: 400 1.0625rem/1.8 var(--sans);
   -webkit-tap-highlight-color: transparent;
 }
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-h1, h2, h3 { margin: 0; font-family: var(--serif); font-weight: 400; line-height: 1.15; letter-spacing: -.005em; }
+h1, h2, h3 { margin: 0; font-family: var(--serif); font-weight: 300; line-height: 1.12; letter-spacing: -.01em; }
 p { margin: 0; }
 .container { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: var(--pad); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -99,44 +99,40 @@ p { margin: 0; }
 .menu-panel .btn { margin-top: auto; }
 @keyframes fade { from { opacity: 0; } }
 
-/* ── hero (בית) ── */
-.hero { position: relative; overflow: hidden; color: #fff; background: var(--dark); min-height: calc(100svh - var(--bar)); display: flex; flex-direction: column; }
-.hero-media { position: relative; flex: 1 1 auto; min-height: 44svh; }
+/* ── hero (בית): תמונה במסך מלא, טקסט בתחתית ── */
+.hero { position: relative; overflow: hidden; color: #fff; background: var(--dark); min-height: calc(100svh - var(--bar)); display: flex; flex-direction: column; justify-content: flex-end; }
+.hero-media { position: absolute; inset: 0; }
 .hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.hero-poster { object-position: 50% 24%; }
-.hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30, 26, 22, 0) 58%, var(--dark) 100%); }
-.hero-body { position: relative; margin-top: -28px; padding-bottom: 30px; }
-.hero h1 { margin: 16px 0 12px; font-size: clamp(2.5rem, 12vw, 3.5rem); line-height: 1.04; font-weight: 300; letter-spacing: -.015em; }
-
+.hero-poster { object-position: 50% 22%; filter: saturate(.7) contrast(1.05) brightness(.97) sepia(.2); }
+.hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(24, 20, 16, .28) 0%, rgba(24, 20, 16, 0) 26%, rgba(24, 20, 16, .5) 58%, rgba(24, 20, 16, .94) 100%); }
+.hero-body { position: relative; padding-top: 44svh; padding-bottom: 36px; }
+.eyebrow { font-size: .78rem; letter-spacing: .16em; color: rgba(255, 255, 255, .82); }
+.hero h1 { margin: 14px 0 28px; font-size: clamp(2.7rem, 13vw, 3.8rem); line-height: 1.02; font-weight: 300; letter-spacing: -.02em; }
 
 /* ── סקשנים ── */
-.intro { padding-top: 56px; }
-.intro p { font: 300 clamp(1.5rem, 6.4vw, 1.95rem)/1.5 var(--serif); max-width: 24em; }
+.intro { padding-top: 88px; }
+.intro p { font: 300 clamp(1.55rem, 6.6vw, 2rem)/1.55 var(--serif); max-width: 22em; }
 .prose { font: 300 1.2rem/1.75 var(--serif); max-width: 34em; }
-.sec { padding-top: 72px; }
-.sec-head { margin-bottom: 38px; }
-.sec-head h2 { font-size: clamp(1.7rem, 7.4vw, 2.1rem); line-height: 1.15; }
+.sec { padding-top: 104px; }
+.sec-head { margin-bottom: 40px; }
+.sec-head h2 { font-size: clamp(2rem, 8.6vw, 2.5rem); line-height: 1.1; font-weight: 300; }
 
-/* גריד הטיפולים: הראשון בגדול, והשאר בזוגות */
-.tgrid { list-style: none; margin: 0 auto; padding: 0 var(--pad); display: grid; grid-template-columns: 1fr 1fr; gap: 36px 14px; max-width: 1120px; }
-.tgrid > .tx-lead { grid-column: 1 / -1; }
-.tx-lead .titem-img { aspect-ratio: 5 / 4; }
-.tx-lead h3 { font-size: 1.7rem; }
-.tx-lead .titem-short { font-size: .95rem; }
-.trows { list-style: none; margin: 44px auto 0; }
-.trow { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'name arrow' 'short arrow'; column-gap: 16px; align-items: center; padding: 20px 0; border-top: 1px solid var(--line); text-decoration: none; }
-.trows li:last-child .trow { border-bottom: 1px solid var(--line); }
-.trow-name { grid-area: name; font: 400 1.4rem/1.2 var(--serif); }
-.trow-short { grid-area: short; font-size: .88rem; color: var(--muted); }
-.trow-arrow { grid-area: arrow; font-size: 1.3rem; color: var(--bronze); transition: transform .35s var(--ease); }
-.trow:hover .trow-arrow { transform: translateX(-6px); }
-.titem { display: block; text-decoration: none; }
-.titem-img { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--line); }
-.titem-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease); }
-.titem:hover .titem-img img { transform: scale(1.035); }
-.titem-body { display: grid; gap: 3px; padding-top: 16px; }
-.titem h3 { font-size: 1.2rem; line-height: 1.25; }
-.titem-short { font-size: .86rem; line-height: 1.55; color: var(--muted); }
+/* אינדקס הטיפולים: רשימה אחת אחידה */
+.sx-list { list-style: none; margin-block: 0; padding-block: 0; }
+.sx-list > li { border-bottom: 1px solid var(--line); }
+.sx-list > li:first-child { border-top: 1px solid var(--line); }
+.sx { display: grid; grid-template-columns: 28px 1fr auto 18px; align-items: center; column-gap: 14px; padding: 28px 0; text-decoration: none; }
+.sx-n { font: 400 .78rem var(--mark); letter-spacing: .14em; color: var(--bronze); align-self: start; padding-top: 9px; }
+.sx-t { display: grid; gap: 6px; min-width: 0; }
+.sx-name { font: 300 clamp(1.6rem, 7vw, 2rem)/1.12 var(--serif); transition: color .35s var(--ease); }
+.sx-sub { font-size: .9rem; line-height: 1.55; color: var(--muted); }
+.sx-p { font: 400 1.05rem var(--serif); white-space: nowrap; }
+.sx-a { color: var(--bronze); font-size: 1.2rem; transition: transform .35s var(--ease); }
+.sx:hover .sx-name { color: var(--bronze); }
+.sx:hover .sx-a { transform: translateX(-6px); }
+
+.band { margin: 104px 0 0; }
+.band-img { width: 100%; aspect-ratio: 4 / 5; max-height: 86svh; object-fit: cover; object-position: 50% 40%; }
 
 /* המלצות */
 .rail { list-style: none; margin: 0 auto; padding: 2px var(--pad) 10px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1120px; }
@@ -154,7 +150,7 @@ p { margin: 0; }
 .about-img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; }
 .about-text { display: grid; gap: 14px; }
 .kicker { font-size: .84rem; letter-spacing: .06em; color: var(--bronze); }
-.about-text h2 { font-size: 2.3rem; line-height: 1.08; }
+.about-text h2 { font-size: 2.6rem; line-height: 1.05; }
 .about-text p:not(.kicker) { color: var(--muted); }
 .certs { margin-top: 44px; border-block: 1px solid var(--line); margin-inline: auto; }
 .certs summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 22px 0; font: 400 1.1rem var(--serif); }
@@ -184,13 +180,13 @@ p { margin: 0; }
 /* ── שאלות ── */
 .faq { border-top: 1px solid var(--line); }
 .faq details { border-bottom: 1px solid var(--line); }
-.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 0; }
+.faq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 26px 0; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary h3 { font: 400 1.02rem/1.5 var(--sans); letter-spacing: 0; }
+.faq summary h3 { font: 300 1.25rem/1.45 var(--serif); letter-spacing: 0; }
 .faq details p { padding: 0 0 24px; color: var(--muted); font-size: .95rem; }
 
 /* ── קביעת תור ── */
-.book { margin-top: 72px; padding: 80px 0 64px; background: var(--dark); color: var(--on-dark); text-align: center; }
+.book { margin-top: 104px; padding: 96px 0 64px; background: var(--dark); color: var(--on-dark); text-align: center; }
 .book-card { max-width: 520px; margin-inline: auto; }
 .book-card h2 { font-size: clamp(2.3rem, 11vw, 3.2rem); font-weight: 300; line-height: 1.05; }
 .book-card > p { margin: 18px auto 38px; max-width: 28ch; color: var(--on-dark-dim); }
@@ -262,6 +258,11 @@ p { margin: 0; }
 .foot ul a { display: flex; align-items: center; justify-content: center; min-height: 48px; border-top: 1px solid var(--rule-dark); }
 .copy { font-size: .84rem; opacity: .7; }
 
+/* ── חשיפה עדינה בגלילה (רק כש-JS פעיל; בלי JS הכול גלוי) ── */
+.js :is(.intro, .band, .sec-head, .sx-list li, .about-card, .faq, .book-card, .s-hero-body, .prose, .types, .prices):not(.in) { opacity: 0; transform: translateY(18px); }
+.js :is(.intro, .band, .sec-head, .sx-list li, .about-card, .faq, .book-card, .s-hero-body, .prose, .types, .prices) { transition: opacity .9s var(--ease), transform .9s var(--ease); }
+.rv-off :is(.intro, .band, .sec-head, .sx-list li, .about-card, .faq, .book-card, .s-hero-body, .prose, .types, .prices):not(.in) { opacity: 1; transform: none; }
+
 /* ── סרגל תחתון דביק (נייד) ── */
 .sticky { position: fixed; inset-inline: 0; bottom: 0; z-index: 50; display: flex; gap: 10px; padding: 10px 14px calc(10px + env(safe-area-inset-bottom)); background: var(--dark); border-top: 1px solid var(--rule-dark); transition: transform .4s var(--ease); }
 .sticky.is-hidden { transform: translateY(110%); }
@@ -271,11 +272,7 @@ p { margin: 0; }
 /* ── טאבלט ── */
 @media (min-width: 720px) {
   :root { --pad: 36px; }
-  .tgrid { grid-template-columns: repeat(3, 1fr); }
-  .tgrid > .tx-lead { grid-column: auto; }
-  .tx-lead .titem-img { aspect-ratio: 4 / 5; }
-  .tx-lead h3 { font-size: 1.2rem; }
-  .tx-lead .titem-short { font-size: .84rem; }
+  .band-img { aspect-ratio: 16 / 9; }
   .rail > li { flex-basis: 38%; }
   .rail-reviews > li { flex-basis: 28%; }
   .rail-certs > li { flex-basis: 42%; }
@@ -296,21 +293,27 @@ p { margin: 0; }
   .head-cta { display: inline-flex !important; }
   .brand { margin-inline-end: 0; }
 
-  .hero { min-height: 720px; justify-content: center; }
-  .hero-media { position: absolute; inset-block: 0; inset-inline-start: auto; inset-inline-end: 0; width: 48%; flex: none; min-height: 0; }
-  .hero-poster { object-position: 50% 28%; }
-  .hero-media::after { background: linear-gradient(270deg, rgba(30, 26, 22, .55) 0%, rgba(30, 26, 22, 0) 40%); }
-  .hero-body { margin-top: 0; padding-block: 120px; }
-  .hero-body > * { max-width: 460px; }
-  .hero h1 { font-size: 5rem; }
+  .hero { min-height: min(calc(100svh - var(--bar)), 820px); justify-content: center; }
+  .hero-media { inset-inline-start: auto; inset-inline-end: 0; width: 52%; }
+  .hero-poster { object-position: 50% 24%; }
+  .hero-media::after { background: linear-gradient(270deg, rgba(24, 20, 16, .5) 0%, rgba(24, 20, 16, 0) 38%); }
+  .hero-body { padding-block: 120px; }
+  .hero-body > * { max-width: 420px; }
+  .hero h1 { font-size: 5.4rem; margin-bottom: 40px; }
   .hero .stack { grid-template-columns: auto; justify-items: start; }
   .hero .btn-lg { width: auto; }
 
-  .sec { padding-top: 104px; }
-  .book { margin-top: 104px; }
-  .sec-head h2 { font-size: 2.8rem; }
-  .tgrid { grid-template-columns: repeat(3, 1fr); gap: 0 24px; }
-  .intro { padding-top: 88px; }
+  .sec { padding-top: 152px; }
+  .book { margin-top: 152px; }
+  .sec-head h2 { font-size: 3.4rem; }
+  .intro { padding-top: 120px; }
+  .intro p { font-size: 2.5rem; max-width: 24em; }
+  .sx { grid-template-columns: 56px 1fr auto 28px; padding: 40px 0; column-gap: 28px; }
+  .sx-name { font-size: 2.6rem; }
+  .sx-sub { font-size: 1rem; }
+  .sx-p { font-size: 1.3rem; }
+  .band { margin: 152px auto 0; max-width: 1120px; padding-inline: var(--pad); }
+  .band-img { aspect-ratio: 16 / 9; }
 
   .rail { overflow: visible; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); padding-inline: var(--pad); }
   .rail-reviews { grid-template-columns: repeat(6, 1fr); }
@@ -318,9 +321,11 @@ p { margin: 0; }
 
   .about-card { grid-template-columns: 380px 1fr; gap: 80px; align-items: center; }
   .about-text h2 { font-size: 3.2rem; }
-  .sec-narrow .sec-head, .sec-narrow .container { max-width: 800px; }
-  .certs { max-width: 760px; }
-  .book { padding-block: 120px 96px; }
+  .sec-narrow { display: grid; grid-template-columns: minmax(200px, 1fr) 2fr; column-gap: 96px; max-width: 1120px; margin-inline: auto; padding-inline: var(--pad); align-items: start; }
+  .sec-narrow > * { max-width: none; margin: 0; padding-inline: 0; }
+  .sec-narrow > .sec-head { position: sticky; top: calc(var(--bar) + 40px); }
+  .sec-narrow .prose { font-size: 1.4rem; }
+  .book { padding-block: 152px 112px; }
   .book-card { max-width: 560px; }
 
   .s-hero { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; padding-block: 8px 0; }
