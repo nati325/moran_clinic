@@ -122,3 +122,13 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--focus); out
   .sheet-wrap { align-items: center; }
   .sheet { max-height: 86svh; }
 }
+
+/* הזמנות אונליין */
+.badge { position: absolute; top: 6px; inset-inline-end: calc(50% - 22px); min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--bronze); color: #fff; font: 500 .7rem/18px var(--sans); font-style: normal; text-align: center; }
+.tabs button { position: relative; }
+.av-grid { display: grid; gap: 4px; margin: 8px 0 14px; }
+.av-row { display: grid; grid-template-columns: 84px 1fr 1fr; gap: 8px; align-items: center; }
+.av-row .check { margin: 0; }
+.av-row input[type=time] { min-width: 0; min-height: 44px; padding: 6px 6px; direction: ltr; }
+.av-block { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+.req-actions { margin: 0 0 18px; padding-bottom: 18px; border-bottom: 1px solid var(--line); }

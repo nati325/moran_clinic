@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { site } from './src/config.mjs';
 import { allPages, servicePages, home, byKey } from './src/content.mjs';
+import { BOOKABLE } from './api/_lib/booking.js';
 import {
   esc, abs, waLink, telLink, S, dur, durShort, price,
   daysText, hoursHtml, hoursRange, fullAddress, nearbyText, PROD,
@@ -16,6 +17,7 @@ const OUT = 'dist';
 // גרסה לפי תוכן הקובץ: /assets נשמר במטמון לשנה (_headers), אז כל שינוי חייב URL חדש
 const ver = (f) => createHash('sha1').update(readFileSync(f)).digest('hex').slice(0, 8);
 const CSS_URL = `/assets/styles.css?v=${ver('src/assets/styles.css')}`;
+const BOOK_JS_URL = `/assets/book.js?v=${ver('src/assets/book.js')}`;
 const JS_URL = `/assets/site.js?v=${ver('src/assets/site.js')}`;
 
 // ── production: כל משפט/פריט שעדיין מחכה לאישור יורד, וההמלצות מוסתרות עד שיש אמיתיות ──
@@ -63,9 +65,9 @@ const icon = {
 const waBtn = (text, loc, label = 'קביעת תור בוואטסאפ', cls = 'btn btn-wa') =>
   `<a class="${cls}" href="${esc(waLink(text))}" target="_blank" rel="noopener" data-loc="${loc}">${icon.wa}<span>${label}</span></a>`;
 
-// קישור ליומן ההזמנות (Cal.com): מורן מאשרת כל תור. וואטסאפ נשאר הדרך הראשית.
+// קישור לעמוד ההזמנה שלנו (/book/): מורן מאשרת כל תור. וואטסאפ נשאר הדרך הראשית.
 const bookLink = (loc, cls = 'tlink', label = 'קביעת תור אונליין') =>
-  site.bookingUrl ? `<a class="${cls}" href="${esc(site.bookingUrl)}" target="_blank" rel="noopener" data-loc="${loc}" data-booking>${label}</a>` : '';
+  site.bookingUrl ? `<a class="${cls}" href="${esc(site.bookingUrl)}"${/^https?:/.test(site.bookingUrl) ? ' target="_blank" rel="noopener"' : ''} data-loc="${loc}" data-booking>${label}</a>` : '';
 
 const telBtn = (loc, cls = 'btn btn-soft') =>
   `<a class="${cls}" href="${telLink}" data-loc="${loc}">${icon.phone}<span dir="ltr">${site.phoneDisplay}</span></a>`;
@@ -324,7 +326,7 @@ ${markPlaceholders(`<main id="main">${mainHtml}</main>`)}
 ${markPlaceholders(footer())}
 ${page.noindex ? '' : stickyBar(page)}
 <script src="${JS_URL}" defer></script>
-</body>
+${page.key === 'book' ? `<script src="${BOOK_JS_URL}" defer></script>\n` : ''}</body>
 </html>
 `;
 }
@@ -392,6 +394,19 @@ ${faqSection(p.faq)}
 </article>
 ${treatmentRail(p.related, 'more-h', 'עוד אצלי')}
 ${bookingSection(p)}`;
+}
+
+function bookMain(p) {
+  const svc = Object.entries(BOOKABLE).map(([key, v]) => ({ key, name: v.name }));
+  return `
+<section class="bookpg container">
+<p class="kicker">קביעת תור</p>
+<h1>${p.h1}</h1>
+<p class="lead">בוחרים טיפול ומועד, ואני מאשרת בוואטסאפ.</p>
+<div id="book" data-services="${esc(JSON.stringify(svc))}" data-wa="${esc(waLink(p.waText))}"></div>
+<noscript><p class="lead">צריך JavaScript כדי לקבוע תור אונליין. אפשר לכתוב לי בוואטסאפ:</p><div class="stack">${waBtn(p.waText, 'booking', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}</div></noscript>
+<p class="small book-alt">שעווה, או שאלה לפני? <a href="${esc(waLink(p.waText))}" target="_blank" rel="noopener" data-loc="booking">כתבי לי בוואטסאפ</a></p>
+</section>`;
 }
 
 function thankYouMain(p) {
@@ -581,6 +596,9 @@ for (const p of allPages) {
   if (p.key === 'home') {
     main = homeMain(p);
     schemas = [biz, faqSchema(p.faq)];
+  } else if (p.key === 'book') {
+    main = bookMain(p);
+    schemas = [];
   } else if (p.key === 'thankYou') {
     main = thankYouMain(p);
     schemas = [];

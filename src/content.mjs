@@ -207,6 +207,16 @@ export const thankYou = {
   noindex: true,
 };
 
+export const book = {
+  key: 'book',
+  path: '/book/',
+  title: 'קביעת תור | מורן מדר',
+  description: 'בוחרים טיפול ומועד, ואני מאשרת את התור בוואטסאפ.',
+  h1: 'קביעת תור',
+  waText: 'היי מורן, אשמח לקבוע תור',
+  noindex: true,
+};
+
 export const servicePages = [massage, facialMassage, facialTreatment, waxing, brows];
-export const allPages = [home, ...servicePages, thankYou];
+export const allPages = [home, ...servicePages, book, thankYou];
 export const byKey = Object.fromEntries(allPages.map((p) => [p.key, p]));

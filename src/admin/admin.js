@@ -107,7 +107,7 @@ function render() {
       h('button', { class: 'icon-btn', type: 'button', 'aria-label': 'יציאה', onclick: guard(async () => { await api('auth', { method: 'DELETE' }); renderLogin(); }) }, 'יציאה')),
     main,
     h('nav', { class: 'tabs', 'aria-label': 'ניווט ראשי' }, TABS.map(([k, label, d]) =>
-      h('button', { type: 'button', class: k === state.tab ? 'on' : '', 'aria-current': k === state.tab ? 'page' : null, onclick: () => go(k) }, icon(d), h('span', null, label)))));
+      h('button', { type: 'button', class: k === state.tab ? 'on' : '', 'aria-current': k === state.tab ? 'page' : null, onclick: () => go(k) }, icon(d), h('span', null, label), k === 'today' && pendingCount() ? h('i', { class: 'badge', 'aria-label': `${pendingCount()} בקשות ממתינות` }, pendingCount()) : null))));
 }
 function go(tab) { state.tab = tab; if (tab === 'stats') loadStats().then(render).catch((e) => toast(e.message, true)); render(); window.scrollTo(0, 0); }
 
@@ -116,9 +116,10 @@ const chip = (status) => h('span', { class: `chip s-${status}` }, STATUS[status]
 function apptRow(a, { showDay } = {}) {
   return h('li', null, h('button', { type: 'button', class: 'row' + (a.status === 'cancelled' ? ' dim' : ''), onclick: () => apptSheet(a) },
     h('span', { class: 'time' }, showDay ? h('small', null, dayLabel(a.start.slice(0, 10), { weekday: 'short', day: 'numeric', month: 'numeric' })) : null, hhmm(a.start)),
-    h('span', { class: 'grow' }, h('strong', null, a.name), h('small', null, [svcName(a.service), a.source === 'cal' ? 'מ-Cal.com' : ''].filter(Boolean).join(' · '))),
+    h('span', { class: 'grow' }, h('strong', null, a.name), h('small', null, [svcName(a.service), a.source === 'site' ? 'מהאתר' : ''].filter(Boolean).join(' · '))),
     chip(a.status)));
 }
+const pendingCount = () => state.appts.filter((a) => a.status === 'requested' && a.start.slice(0, 10) >= todayStr()).length;
 const empty = (t) => h('p', { class: 'empty' }, t);
 const activeAppts = (list) => list.filter((a) => a.status !== 'cancelled');
 
@@ -153,6 +154,22 @@ function viewCalendar() {
     list.length ? h('ul', { class: 'list' }, list.map((a) => apptRow(a))) : empty('אין תורים ביום הזה.'),
     h('button', { class: 'fab', type: 'button', onclick: () => apptSheet(null, { date: state.day }) }, '+ תור חדש'),
   ];
+}
+
+// ── אישור/דחיית בקשת תור: מעדכן סטטוס ופותח וואטסאפ עם הודעה מוכנה ──
+async function decide(a, status) {
+  const r = await api('appointments', { method: 'PUT', body: { id: a.id, status } });
+  const i = state.appts.findIndex((x) => x.id === a.id);
+  if (i >= 0) state.appts[i] = r.appointment;
+  const day = dayLabel(a.start.slice(0, 10), { weekday: 'long', day: 'numeric', month: 'long' });
+  const first = a.name.split(' ')[0];
+  const text = status === 'confirmed'
+    ? `היי ${first}, מאשרת את התור שלך: ${svcName(a.service)}, ${day} בשעה ${hhmm(a.start)}. אשמח לראות אותך!`
+    : `היי ${first}, לצערי לא מתאפשר לי התור שביקשת ל${day} בשעה ${hhmm(a.start)}. אפשר לבחור מועד אחר באתר או לכתוב לי כאן.`;
+  const link = waLink(a.phone);
+  closeSheet(); render();
+  toast(status === 'confirmed' ? 'התור אושר' : 'הבקשה נדחתה');
+  if (link) window.open(`${link}?text=${encodeURIComponent(text)}`, '_blank', 'noopener');
 }
 
 // ── טופס תור ──
@@ -203,7 +220,9 @@ function apptSheet(a, defaults = {}) {
   });
   const wa = waLink(cur.phone);
   openSheet(isNew ? 'תור חדש' : 'תור', h('form', { onsubmit: save },
-    cur.source === 'cal' && cur.status === 'requested' ? h('p', { class: 'hint' }, 'הבקשה הגיעה מ-Cal.com. האישור הסופי למטופלת נעשה שם: ', h('a', { href: 'https://app.cal.com/bookings/unconfirmed', target: '_blank', rel: 'noopener' }, 'פתחי בקשות ממתינות')) : null,
+    !isNew && cur.status === 'requested' ? h('div', { class: 'actions req-actions' },
+      h('button', { class: 'btn btn-wa', type: 'button', onclick: guard(() => decide(cur, 'confirmed')) }, 'אישור ושליחה בוואטסאפ'),
+      h('button', { class: 'btn btn-soft', type: 'button', onclick: guard(() => decide(cur, 'cancelled')) }, 'דחייה')) : null,
     field('שם', name, 'a-name'), h('datalist', { id: 'dl-clients' }, state.clients.map((c) => h('option', { value: c.name }))),
     field('טלפון', phone, 'a-phone'),
     field('טיפול', service, 'a-svc'),
@@ -276,6 +295,41 @@ function clientSheet(c) {
 }
 
 // ── האתר: מחירים ושעות ──
+function availabilitySection() {
+  const c = state.avail;
+  const rows = DAY_NAMES.map(([en, he]) => {
+    const w = c.week[en];
+    return h('div', { class: 'av-row' },
+      h('label', { class: 'check' }, h('input', { type: 'checkbox', 'data-av': 'open', 'data-day': en, checked: w.open }), ` יום ${he}`),
+      h('input', { type: 'time', 'data-av': 'from', 'data-day': en, value: w.from, 'aria-label': `פתיחה ${he}` }),
+      h('input', { type: 'time', 'data-av': 'to', 'data-day': en, value: w.to, 'aria-label': `סגירה ${he}` }));
+  });
+  const num = (id, label, v, min, max) => field(label, h('input', { id, type: 'number', inputmode: 'numeric', min, max, value: String(v), dir: 'ltr' }), id);
+  const blocked = h('div', { class: 'av-blocked' });
+  const drawBlocked = () => blocked.replaceChildren(...(c.blocked.length ? c.blocked.map((b, i) => h('div', { class: 'av-block' },
+    h('span', null, b.from === b.to ? dayLabel(b.from, { day: 'numeric', month: 'long' }) : `${dayLabel(b.from, { day: 'numeric', month: 'short' })} – ${dayLabel(b.to, { day: 'numeric', month: 'short' })}`, b.note ? ` · ${b.note}` : ''),
+    h('button', { class: 'icon-btn', type: 'button', 'aria-label': 'הסרה', onclick: () => { c.blocked.splice(i, 1); drawBlocked(); } }, '✕'))) : [h('p', { class: 'hint' }, 'אין חסימות.')]));
+  drawBlocked();
+  const bf = h('input', { id: 'bl-from', type: 'date' }), bt = h('input', { id: 'bl-to', type: 'date' }), bn = h('input', { id: 'bl-note', maxlength: 80, placeholder: 'למשל: חופשה' });
+  const collect = () => ({
+    step: Number($('#av-step').value), bufferMin: Number($('#av-buf').value), minNoticeHours: Number($('#av-notice').value), maxDaysAhead: Number($('#av-ahead').value),
+    week: Object.fromEntries(DAY_NAMES.map(([en]) => [en, { open: $(`[data-av=open][data-day=${en}]`).checked, from: $(`[data-av=from][data-day=${en}]`).value, to: $(`[data-av=to][data-day=${en}]`).value }])),
+    blocked: c.blocked,
+  });
+  const step = h('select', { id: 'av-step', value: String(c.step) }, [15, 20, 30, 45, 60].map((m) => h('option', { value: String(m) }, `כל ${m} דקות`)));
+  return h('section', null, h('h2', null, 'הזמנות אונליין'),
+    h('p', { class: 'hint' }, 'הימים והשעות שבהם אפשר לבקש תור באתר. השינוי נכנס מיד, בלי פרסום. הבקשות מחכות לאישור שלך ביומן.'),
+    h('div', { class: 'av-grid' }, rows),
+    h('div', { class: 'two' }, field('מרווח בין שעות', step, 'av-step'), num('av-buf', 'הפסקה בין תורים (דק׳)', c.bufferMin, 0, 120)),
+    h('div', { class: 'two' }, num('av-notice', 'הזמנה מראש (שעות)', c.minNoticeHours, 0, 168), num('av-ahead', 'עד כמה ימים קדימה', c.maxDaysAhead, 7, 180)),
+    h('h3', null, 'חופשה / ימים חסומים'), blocked,
+    h('div', { class: 'two' }, field('מתאריך', bf, 'bl-from'), field('עד תאריך', bt, 'bl-to')),
+    field('הערה', bn, 'bl-note'),
+    h('div', { class: 'actions' },
+      h('button', { class: 'btn btn-soft', type: 'button', onclick: () => { if (!bf.value) return toast('בחרי תאריך התחלה', true); c.blocked.push({ from: bf.value, to: bt.value && bt.value >= bf.value ? bt.value : bf.value, note: bn.value }); c.blocked.sort((a, b) => a.from.localeCompare(b.from)); bf.value = bt.value = bn.value = ''; drawBlocked(); } }, 'הוספת חסימה'),
+      h('button', { class: 'btn btn-wa', type: 'button', onclick: guard(async () => { state.avail = (await api('availability', { method: 'PUT', body: collect() })).config; toast('הזמינות נשמרה'); }) }, 'שמירת זמינות')));
+}
+
 function viewSite() {
   const s = state.settings || {};
   const ov = s.overrides || {};
@@ -295,8 +349,9 @@ function viewSite() {
   return [
     h('p', { class: 'hint' }, 'השינויים נשמרים כטיפוס ומתפרסמים באתר רק כשלוחצים "פרסום לאתר". הפרסום לוקח כדקה.'),
     unpublished ? h('p', { class: 'banner' }, 'יש שינויים שעוד לא פורסמו באתר.') : (s.published ? h('p', { class: 'hint' }, `פורסם לאחרונה: ${fmt({ dateStyle: 'medium', timeStyle: 'short' }).format(new Date(s.published.at))}`) : null),
+    availabilitySection(),
     h('section', null, h('h2', null, 'מחירים (₪)'), priceInputs),
-    h('section', null, h('h2', null, 'שעות פעילות'), h('div', { class: 'two' }, field('פתיחה', opens, 'h-open'), field('סגירה', closes, 'h-close')), h('div', { class: 'days-row', role: 'group', 'aria-label': 'ימי פעילות' }, dayBtns)),
+    h('section', null, h('h2', null, 'שעות פעילות (מוצגות באתר)'), h('div', { class: 'two' }, field('פתיחה', opens, 'h-open'), field('סגירה', closes, 'h-close')), h('div', { class: 'days-row', role: 'group', 'aria-label': 'ימי פעילות' }, dayBtns)),
     h('div', { class: 'actions' },
       h('button', { class: 'btn btn-soft', type: 'button', onclick: guard(async () => { await saveDraft(); render(); toast('נשמר כטיוטה'); }) }, 'שמירה כטיוטה'),
       h('button', { class: 'btn btn-wa', type: 'button', onclick: guard(async () => {
@@ -347,8 +402,8 @@ function viewStats() {
 // ── אתחול ──
 async function boot() {
   state.meta = await (await fetch('/admin/meta.json', { cache: 'no-cache' })).json();
-  const [c, a, s] = await Promise.all([api('clients'), api('appointments'), api('settings')]);
-  state.clients = c.clients; state.appts = a.appointments; state.settings = s;
+  const [c, a, s, av] = await Promise.all([api('clients'), api('appointments'), api('settings'), api('availability')]);
+  state.clients = c.clients; state.appts = a.appointments; state.settings = s; state.avail = av.config;
   render();
 }
 

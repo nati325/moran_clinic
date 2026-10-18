@@ -1,4 +1,4 @@
-// יומן ותורים: ידניים וכאלה שמגיעים מ-Cal.com (דרך cal-webhook).
+// יומן ותורים: ידניים, ובקשות מעמוד ההזמנה באתר (api/book).
 import { handler, send, jsonBody, guard, newId, str, DATETIME } from './_lib/http.js';
 import { hgetallJSON, hsetJSON, hgetJSON, hdel } from './_lib/store.js';
 
@@ -18,7 +18,6 @@ function clean(i, old = {}) {
     status: STATUSES.includes(i.status) ? i.status : old.status || 'confirmed',
     note: str(i.note ?? old.note ?? '', 1000),
     source: old.source || 'manual',
-    ...(old.calUid ? { calUid: old.calUid } : {}),
     createdAt: old.createdAt || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

@@ -3,7 +3,7 @@ import { handler, send, jsonBody, dayKey, clientIp, throttle } from './_lib/http
 import { pipe, storeKind } from './_lib/store.js';
 
 const EVENTS = new Set(['pv', 'click_whatsapp', 'click_phone', 'click_booking']);
-const PAGES = new Set(['/', '/massage/', '/facial-massage/', '/facial-treatment/', '/waxing/', '/eyebrows/', '/thank-you/']);
+const PAGES = new Set(['/', '/massage/', '/facial-massage/', '/facial-treatment/', '/waxing/', '/eyebrows/', '/book/', '/thank-you/']);
 
 export default handler(async (req, res) => {
   if (req.method !== 'POST') return send(res, 405, { error: 'method' });
