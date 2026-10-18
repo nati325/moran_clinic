@@ -148,7 +148,8 @@ export const services = {
     priceLabel: 'לפי אזור',
     path: '/waxing/',
   },
-  brows: { name: 'עיצוב גבות + שפם', duration: 20, price: 100, path: '/eyebrows/' },
+  // showDuration: false = לא מציגים את משך הטיפול באתר (נשאר לשימוש האפליקציה והיומן)
+  brows: { name: 'עיצוב גבות + שפם', duration: 20, showDuration: false, price: 100, path: '/eyebrows/' },
 };
 
 // בזמן הבנייה: מחירים ושעות פעילות שמורן עדכנה באפליקציית הניהול (אם האחסון מחובר).

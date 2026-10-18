@@ -356,7 +356,8 @@ ${bookingSection(p)}`;
 
 function serviceMain(p) {
   const s = S[p.key];
-  const chips = [s.duration || s.durLabel ? durShort(s) : '', price(s)].filter(Boolean);
+  // בעמוד השירות: משך הטיפול בלבד. מחירים מופיעים רק במחירון (ובגבות אין משך בכלל)
+  const chips = [s.showDuration !== false && (s.duration || s.durLabel) ? durShort(s) : ''].filter(Boolean);
   return `
 <nav class="crumbs container" aria-label="פירורי לחם"><ol><li><a href="/">בית</a></li><li aria-current="page">${p.navLabel}</li></ol></nav>
 <article>
@@ -365,7 +366,7 @@ ${site.images[p.key]?.none ? '' : `<div class="s-hero-img">${picture(site.images
 <div class="s-hero-body">
 <h1 id="hero-h">${p.h1}</h1>
 <p class="lead">${p.lead}</p>
-<ul class="chips chips-light">${chips.map((c) => `<li>${c}</li>`).join('')}</ul>
+${chips.length ? `<ul class="chips chips-light">${chips.map((c) => `<li>${c}</li>`).join('')}</ul>` : ''}
 <div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('hero_online')}</div>
 </div>
 </section>
@@ -385,7 +386,7 @@ ${secHead('steps-h', 'איך זה מתנהל')}
 <p class="prose container">${p.steps.join(' ')}</p>
 </section>
 
-${p.priceKeys.length > 1 ? priceSection(p.priceKeys, 'מחיר') : ''}
+${priceSection(p.priceKeys, 'מחירון')}
 ${reviewsRail()}
 ${faqSection(p.faq)}
 </article>
