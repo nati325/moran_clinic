@@ -66,8 +66,13 @@ const waBtn = (text, loc, label = 'קביעת תור בוואטסאפ', cls = 'b
   `<a class="${cls}" href="${esc(waLink(text))}" target="_blank" rel="noopener" data-loc="${loc}">${icon.wa}<span>${label}</span></a>`;
 
 // קישור לעמוד ההזמנה שלנו (/book/): מורן מאשרת כל תור. וואטסאפ נשאר הדרך הראשית.
+// בעמוד של טיפול שאפשר להזמין, הקישור פותח את ההזמנה כשהטיפול כבר נבחר (?s=)
+const bookHref = () => {
+  const key = allPages.find((p) => p.path === currentPath)?.key;
+  return site.bookingUrl + (BOOKABLE[key] && !/^https?:/.test(site.bookingUrl) ? `?s=${key}` : '');
+};
 const bookLink = (loc, cls = 'tlink', label = 'קביעת תור אונליין') =>
-  site.bookingUrl ? `<a class="${cls}" href="${esc(site.bookingUrl)}"${/^https?:/.test(site.bookingUrl) ? ' target="_blank" rel="noopener"' : ''} data-loc="${loc}" data-booking>${label}</a>` : '';
+  site.bookingUrl ? `<a class="${cls}" href="${esc(bookHref())}"${/^https?:/.test(site.bookingUrl) ? ' target="_blank" rel="noopener"' : ''} data-loc="${loc}" data-booking>${label}</a>` : '';
 
 const telBtn = (loc, cls = 'btn btn-soft') =>
   `<a class="${cls}" href="${telLink}" data-loc="${loc}">${icon.phone}<span dir="ltr">${site.phoneDisplay}</span></a>`;

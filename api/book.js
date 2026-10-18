@@ -48,5 +48,5 @@ export default handler(async (req, res) => {
   const a = { id: newId(), clientId: client.id, name, phone, service: b.service, start, durationMin: svc.duration, status: 'requested', note, source: 'site', createdAt: now, updatedAt: now };
   await hsetJSON('appts', a.id, a);
   await notify(a, svc.name);
-  send(res, 201, { ok: true, summary: { service: svc.name, date, time } });
+  send(res, 201, { ok: true, summary: { service: svc.name, date, time, durationMin: svc.duration } });
 });
