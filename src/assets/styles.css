@@ -1,8 +1,8 @@
-@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 400 500; font-display: swap; src: url(/assets/fonts/Cinzel-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: 'Frank Ruhl Libre'; font-style: normal; font-weight: 300 500; font-display: swap; src: url(/assets/fonts/FrankRuhlLibre-hebrew.woff2) format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
-@font-face { font-family: 'Frank Ruhl Libre'; font-style: normal; font-weight: 300 500; font-display: swap; src: url(/assets/fonts/FrankRuhlLibre-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
-@font-face { font-family: 'Heebo'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(/assets/fonts/Heebo-hebrew.woff2) format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
-@font-face { font-family: 'Heebo'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(/assets/fonts/Heebo-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Rubik'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(/assets/fonts/Rubik-hebrew.woff2) format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: 'Rubik'; font-style: normal; font-weight: 300 600; font-display: swap; src: url(/assets/fonts/Rubik-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Assistant'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(/assets/fonts/Assistant-hebrew.woff2) format('woff2'); unicode-range: U+0307-0308, U+0590-05FF, U+200C-2010, U+20AA, U+25CC, U+FB1D-FB4F; }
+@font-face { font-family: 'Assistant'; font-style: normal; font-weight: 300 700; font-display: swap; src: url(/assets/fonts/Assistant-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: 'Jost'; font-style: normal; font-weight: 300 500; font-display: swap; src: url(/assets/fonts/Jost-latin.woff2) format('woff2'); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
 
 /* מורן מדר: mobile-first. שקט, אוויר, תמונה אחת בכל פעם. */
 
@@ -20,9 +20,9 @@
   --rule-dark: rgba(236, 228, 216, .16);
   --focus: #1b5fb3;
   --pad: 24px;
-  --serif: 'Frank Ruhl Libre', 'David Libre', 'Times New Roman', serif;
-  --sans: 'Heebo', 'Segoe UI', Arial, sans-serif;
-  --mark: 'Cinzel', 'Times New Roman', serif;
+  --display: 'Rubik', 'Assistant', Arial, sans-serif;
+  --sans: 'Assistant', 'Segoe UI', Arial, sans-serif;
+  --mark: 'Jost', 'Assistant', Arial, sans-serif;
   --ease: cubic-bezier(.2, .7, .2, 1);
   --bar: 60px;
 }
@@ -35,13 +35,13 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font: 400 1rem/1.75 var(--sans);
+  font: 400 1.0625rem/1.7 var(--sans);
   -webkit-tap-highlight-color: transparent;
 }
 img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
-h1, h2, h3 { margin: 0; font-family: var(--serif); font-weight: 400; line-height: 1.15; letter-spacing: -.005em; }
+h1, h2, h3 { margin: 0; font-family: var(--display); font-weight: 400; line-height: 1.15; letter-spacing: -.005em; }
 p { margin: 0; }
 .container { width: 100%; max-width: 1120px; margin-inline: auto; padding-inline: var(--pad); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -94,7 +94,7 @@ p { margin: 0; }
   display: flex; flex-direction: column; animation: fade .3s var(--ease);
 }
 .menu-panel ul { list-style: none; margin: 0 0 32px; padding: 0; }
-.menu-panel a:not(.btn) { display: block; padding: 16px 0; font: 300 1.9rem/1.2 var(--serif); text-decoration: none; border-bottom: 1px solid var(--line); }
+.menu-panel a:not(.btn) { display: block; padding: 16px 0; font: 300 1.9rem/1.2 var(--display); text-decoration: none; border-bottom: 1px solid var(--line); }
 .menu-panel a[aria-current="page"] { color: var(--bronze); }
 .menu-panel .btn { margin-top: auto; }
 @keyframes fade { from { opacity: 0; } }
@@ -111,8 +111,8 @@ p { margin: 0; }
 
 /* ── סקשנים ── */
 .intro { padding-top: 56px; }
-.intro p { font: 300 clamp(1.5rem, 6.4vw, 1.95rem)/1.5 var(--serif); max-width: 24em; }
-.prose { font: 300 1.2rem/1.75 var(--serif); max-width: 34em; }
+.intro p { font: 300 clamp(1.5rem, 6.4vw, 1.95rem)/1.5 var(--display); max-width: 24em; }
+.prose { font: 300 1.2rem/1.75 var(--display); max-width: 34em; }
 .sec { padding-top: 72px; }
 .sec-head { margin-bottom: 38px; }
 .sec-head h2 { font-size: clamp(1.7rem, 7.4vw, 2.1rem); line-height: 1.15; }
@@ -126,7 +126,7 @@ p { margin: 0; }
 .trows { list-style: none; margin: 44px auto 0; }
 .trow { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'name arrow' 'short arrow'; column-gap: 16px; align-items: center; padding: 20px 0; border-top: 1px solid var(--line); text-decoration: none; }
 .trows li:last-child .trow { border-bottom: 1px solid var(--line); }
-.trow-name { grid-area: name; font: 400 1.4rem/1.2 var(--serif); }
+.trow-name { grid-area: name; font: 400 1.4rem/1.2 var(--display); }
 .trow-short { grid-area: short; font-size: .88rem; color: var(--muted); }
 .trow-arrow { grid-area: arrow; font-size: 1.3rem; color: var(--bronze); transition: transform .35s var(--ease); }
 .trow:hover .trow-arrow { transform: translateX(-6px); }
@@ -146,7 +146,7 @@ p { margin: 0; }
 .slot { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; background: #ece3d6; color: var(--muted); font-size: .84rem; padding: 10px; }
 .review { margin: 0; }
 .review .slot, .review img { aspect-ratio: 9 / 16; width: 100%; object-fit: cover; }
-.review blockquote { margin: 0; border-top: 1px solid var(--line); padding: 18px 0; font: 300 1.1rem/1.6 var(--serif); }
+.review blockquote { margin: 0; border-top: 1px solid var(--line); padding: 18px 0; font: 300 1.1rem/1.6 var(--display); }
 .review figcaption { font-size: .84rem; color: var(--muted); margin-top: 8px; }
 
 /* ── המטפלת ── */
@@ -157,7 +157,7 @@ p { margin: 0; }
 .about-text h2 { font-size: 2.3rem; line-height: 1.08; }
 .about-text p:not(.kicker) { color: var(--muted); }
 .certs { margin-top: 44px; border-block: 1px solid var(--line); margin-inline: auto; }
-.certs summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 22px 0; font: 400 1.1rem var(--serif); }
+.certs summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; padding: 22px 0; font: 400 1.1rem var(--display); }
 .certs summary::-webkit-details-marker { display: none; }
 .certs summary::after, .faq summary::after {
   content: ''; flex: none; width: 13px; height: 13px; color: var(--bronze);
@@ -169,17 +169,17 @@ p { margin: 0; }
 .rail-certs > li { flex-basis: 78%; }
 .cert { display: grid; gap: 12px; text-decoration: none; }
 .cert span { font-size: .84rem; line-height: 1.5; color: var(--muted); }
-.cert strong { display: block; font: 400 .98rem var(--serif); color: var(--ink); }
+.cert strong { display: block; font: 400 .98rem var(--display); color: var(--ink); }
 
 /* ── מחירון ── */
 .prices { width: 100%; border-collapse: collapse; margin-inline: auto; }
 .prices tr { border-top: 1px solid var(--line); }
 .prices tr:last-child { border-bottom: 1px solid var(--line); }
 .prices th, .prices td { padding: 8px 0; vertical-align: top; }
-.prices th { text-align: start; font: 400 1.12rem/1.35 var(--serif); }
+.prices th { text-align: start; font: 400 1.12rem/1.35 var(--display); }
 .prices th a { text-decoration: none; display: inline-flex; align-items: center; min-height: 44px; }
 .prices small { display: block; margin-top: 4px; font: 400 .84rem/1.5 var(--sans); color: var(--muted); }
-.prices .pr { text-align: end; white-space: nowrap; font: 400 1.12rem/1.35 var(--serif); padding-inline-start: 18px; padding-top: 19px; }
+.prices .pr { text-align: end; white-space: nowrap; font: 400 1.12rem/1.35 var(--display); padding-inline-start: 18px; padding-top: 19px; }
 
 /* ── שאלות ── */
 .faq { border-top: 1px solid var(--line); }
@@ -260,6 +260,7 @@ p { margin: 0; }
 .foot ul { list-style: none; padding: 0; margin: 18px auto 26px; display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; max-width: 320px; }
 .foot li:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .foot ul a { display: flex; align-items: center; justify-content: center; min-height: 48px; border-top: 1px solid var(--rule-dark); }
+.hello { font: 300 1.2rem/1.4 var(--display); color: var(--on-dark); margin: 4px 0 20px; }
 .copy { font-size: .84rem; opacity: .7; }
 
 /* ── סרגל תחתון דביק (נייד) ── */

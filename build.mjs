@@ -164,21 +164,21 @@ function aboutSection() {
     .map(
       (c) => `<li><a class="cert" href="/assets/img/${c.img}-${c.size[0]}.webp" target="_blank" rel="noopener">
 <img src="/assets/img/${c.img}-560.webp" width="560" height="${Math.round((560 * c.size[1]) / c.size[0])}" alt="תעודת ${esc(c.title)} של מורן מדר מ${esc(c.school)}" loading="lazy" decoding="async">
-<span><strong>${c.title}</strong>${c.school} · <time datetime="${c.iso}">${c.date}</time></span></a></li>`,
+<span><strong>${c.title}</strong>${c.school}</span></a></li>`,
     )
     .join('');
   return `<section class="sec about" aria-labelledby="about-h">
 <div class="container about-card">
 ${picture(site.images.therapist, 'מורן בעבודה', { cls: 'about-img', sizes: '(min-width: 1000px) 320px, 40vw' })}
 <div class="about-text">
-<p class="kicker">המטפלת</p>
+<p class="kicker">קצת עליי</p>
 <h2 id="about-h">${site.therapistName}</h2>
-<p>קוסמטיקאית ומעסה${site.experience ? `, ${site.experience} בתחום` : ''}. מטפלת בנשים בלבד, בקליניקה פרטית ב${site.city}.</p>
+<p>אני קוסמטיקאית ומעסה, ואני מטפלת בנשים בלבד, בקליניקה פרטית ב${site.city}. כל טיפול אצלי מותאם למה שאת צריכה היום.</p>
 ${site.massageTraining ? `<p class="small">${site.massageTraining}</p>` : ''}
 </div>
 </div>
 <div class="container"><details class="certs">
-<summary>הסמכות והכשרה</summary>
+<summary>ההסמכות שלי</summary>
 <ul class="rail rail-certs">${certs}</ul>
 </details></div>
 </section>`;
@@ -201,8 +201,8 @@ function bookingSection(page) {
   return `<section class="sec book" id="booking" aria-labelledby="booking-h">
 <div class="container"><div class="book-card">
 <h2 id="booking-h">רוצה לקבוע תור?</h2>
-<p>הכי נוח בוואטסאפ. כתבי מה בא לך, ומורן חוזרת אלייך עם מועד.</p>
-<div class="stack">${waBtn(page.waText, 'booking', 'כתבי למורן בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
+<p>אשמח לארח אותך. הכי נוח לכתוב לי בוואטסאפ, ואני חוזרת אלייך עם מועד.</p>
+<div class="stack">${waBtn(page.waText, 'booking', 'כתבי לי בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
 <dl class="info">
 <div><dt>ימים</dt><dd>${daysText().replace('ימים ', '')}</dd></div>
 <div><dt>שעות</dt><dd>${hoursHtml()}</dd></div>
@@ -265,6 +265,7 @@ function footer() {
 </address>
 <p class="foot-links"><a href="${site.instagram}" target="_blank" rel="noopener">${icon.ig}<bdi dir="ltr">${site.instagramHandle}</bdi></a></p>
 <nav aria-label="טיפולים"><ul>${servicePages.map((p) => `<li><a href="${p.path}">${p.navLabel}</a></li>`).join('')}</ul></nav>
+<p class="hello">אשמח לראות אותך בקליניקה.</p>
 <p class="copy">© ${new Date().getFullYear()} ${site.businessName} · קליניקה לנשים בלבד</p>
 </div>
 </footer>`;
@@ -314,8 +315,8 @@ ${page.noindex ? '<meta name="robots" content="noindex, follow">\n' : ''}<meta p
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
 <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="preload" href="/assets/fonts/Heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/assets/fonts/FrankRuhlLibre-hebrew.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Assistant-hebrew.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/Rubik-hebrew.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="${CSS_URL}">
 ${analyticsHead(page)}
 ${schemas.map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join('\n')}
@@ -392,7 +393,7 @@ ${p.priceKeys.length > 1 ? priceSection(p.priceKeys, 'מחיר') : ''}
 ${reviewsRail()}
 ${faqSection(p.faq)}
 </article>
-${treatmentRail(p.related, 'more-h', 'עוד אצל מורן', { lead: false })}
+${treatmentRail(p.related, 'more-h', 'עוד אצלי', { lead: false })}
 ${bookingSection(p)}`;
 }
 
@@ -400,7 +401,7 @@ function thankYouMain(p) {
   return `
 <section class="thanks container">
 <h1>${p.h1}</h1>
-<p class="lead">הפרטים אצלנו. מורן תחזור אלייך בהקדם לתיאום.</p>
+<p class="lead">קיבלתי את הפרטים, ואחזור אלייך בהקדם לתיאום.</p>
 <div class="stack">${waBtn(p.waText, 'thank_you', 'רוצה מהר יותר? וואטסאפ', 'btn btn-wa btn-lg')}${telBtn('thank_you')}</div>
 <p><a href="/">חזרה לעמוד הבית</a></p>
 </section>`;
@@ -533,7 +534,7 @@ function llmsTxt() {
 - קהל: נשים בלבד.
 - טלפון ווואטסאפ: ${site.phoneDisplay}
 - שעות פעילות: ${daysText()}, ${hoursRange()}.
-- הכשרה: ${site.certificates.map((c) => `${c.title} (${c.school}, ${c.date})`).join('; ')}.
+- הכשרה: ${site.certificates.map((c) => `${c.title} (${c.school})`).join('; ')}.
 - אינסטגרם: ${site.instagram}
 
 ## מחירים
@@ -602,7 +603,7 @@ currentPath = notFound.path;
 await write('404.html', layout(notFound, `
 <section class="thanks container">
 <h1>העמוד לא נמצא</h1>
-<p class="lead">אולי הקישור השתנה. אפשר לחזור לעמוד הבית או לכתוב למורן ישירות.</p>
+<p class="lead">אולי הקישור השתנה. אפשר לחזור לעמוד הבית או לכתוב לי ישירות.</p>
 <div class="stack">${waBtn(notFound.waText, 'not_found', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}<a class="tlink" href="/">לעמוד הבית</a></div>
 </section>`, []));
 await write('sitemap.xml', sitemap());
