@@ -169,7 +169,7 @@ ${picture(site.images.therapist, 'מורן בעבודה', { cls: 'about-img', si
 <div class="about-text">
 <p class="kicker">קצת עליי</p>
 <h2 id="about-h">${site.therapistName}</h2>
-<p>אני קוסמטיקאית ומעסה, ואני מטפלת בנשים בלבד, בקליניקה פרטית ב${site.city}. כל טיפול אצלי מותאם למה שאת צריכה היום.</p>
+<p>אני מורן, קוסמטיקאית ומעסה. אני מקבלת נשים בקליניקה הפרטית שלי ב${site.city}, ומתאימה כל טיפול למה שאת צריכה היום.</p>
 ${site.massageTraining ? `<p class="small">${site.massageTraining}</p>` : ''}
 </div>
 </div>
@@ -197,7 +197,7 @@ function bookingSection(page) {
   return `<section class="sec book" id="booking" aria-labelledby="booking-h">
 <div class="container"><div class="book-card">
 <h2 id="booking-h">רוצה לקבוע תור?</h2>
-<p>אשמח לארח אותך. הכי נוח לכתוב לי בוואטסאפ, ואני חוזרת אלייך עם מועד.</p>
+<p>כתבי לי בוואטסאפ ואחזור אלייך עם מועד.</p>
 <div class="stack">${waBtn(page.waText, 'booking', 'כתבי לי בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
 <dl class="info">
 <div><dt>ימים</dt><dd>${daysText().replace('ימים ', '')}</dd></div>
@@ -339,7 +339,7 @@ function homeMain(p) {
 ${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, sizes: '(min-width: 1000px) 420px, 100vw' })}
 </div>
 <div class="hero-body container">
-<h1 id="hero-h">עיסוי לנשים<br>בבית דגן</h1>
+<h1 id="hero-h">עיסוי וקוסמטיקה<br>בבית דגן</h1>
 <div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}${bookLink('hero_online') || '<a class="tlink" href="#prices">למחירון</a>'}</div>
 </div>
 </section>
@@ -356,7 +356,7 @@ ${bookingSection(p)}`;
 
 function serviceMain(p) {
   const s = S[p.key];
-  const chips = [s.duration || s.durLabel ? durShort(s) : '', price(s), 'נשים בלבד'].filter(Boolean);
+  const chips = [s.duration || s.durLabel ? durShort(s) : '', price(s)].filter(Boolean);
   return `
 <nav class="crumbs container" aria-label="פירורי לחם"><ol><li><a href="/">בית</a></li><li aria-current="page">${p.navLabel}</li></ol></nav>
 <article>
