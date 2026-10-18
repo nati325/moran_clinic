@@ -89,28 +89,24 @@ function picture(o, label, { cls = '', eager = false, sizes = '(min-width: 1000p
 
 const secHead = (id, title, extra = '') => `<div class="sec-head container"><h2 id="${id}">${title}</h2>${extra}</div>`;
 
-// הטיפולים: צילום גדול לראשון, זוג צילומים, והשאר כשורות טקסט (שירות בלי צילום לא מקבל קישוט)
-function treatmentRail(keys, id = 'treatments-h', title = 'הטיפולים', { lead = true } = {}) {
+// הטיפולים: רשת אחידה. כל כרטיס באותו גודל, עם השם על התמונה. שירות בלי צילום מקבל כרטיס בגוון חם,
+// והכרטיס האחרון (וואטסאפ) סוגר את הרשת.
+function treatmentRail(keys, id = 'treatments-h', title = 'הטיפולים') {
   const hasImg = (k) => site.images[k] && !site.images[k].none;
-  const withImg = keys.filter(hasImg);
-  const text = keys.filter((k) => !hasImg(k));
-  const bigFirst = lead && withImg.length >= 3;
-  const card = (k, i) => {
+  const card = (k) => {
     const p = byKey[k];
-    const big = bigFirst && i === 0;
-    return `<li${big ? ' class="tx-lead"' : ''}><a class="titem" href="${p.path}">
-<span class="titem-img">${picture(site.images[k], p.navLabel, { sizes: big ? '(min-width: 1000px) 360px, 100vw' : '(min-width: 1000px) 360px, 50vw' })}</span>
+    return `<li><a class="titem${hasImg(k) ? '' : ' titem-type'}" href="${p.path}">
+${hasImg(k) ? `<span class="titem-img">${picture(site.images[k], p.navLabel, { sizes: '(min-width: 1000px) 360px, 50vw' })}</span>` : ''}
 <span class="titem-body"><h3>${p.navLabel}</h3><span class="titem-short">${p.short}</span></span>
 </a></li>`;
   };
-  const row = (k) => {
-    const p = byKey[k];
-    return `<li><a class="trow" href="${p.path}"><span class="trow-name">${p.navLabel}</span><span class="trow-short">${p.short}</span><span class="trow-arrow" aria-hidden="true">←</span></a></li>`;
-  };
+  const help = `<li><a class="titem titem-cta" href="${esc(waLink('היי מורן, אשמח לעזרה בבחירת טיפול'))}" target="_blank" rel="noopener" data-loc="tiles">
+<span class="titem-body"><h3>לא בטוחה מה מתאים?</h3><span class="titem-short">כתבי לי ונבחר יחד</span></span>
+</a></li>`;
+  const n = keys.length + 1;
   return `<section class="sec" aria-labelledby="${id}">
 ${secHead(id, title)}
-${withImg.length ? `<ul class="tgrid">${withImg.map(card).join('')}</ul>` : ''}
-${text.length ? `<ul class="trows container">${text.map(row).join('')}</ul>` : ''}
+<ul class="tgrid tgrid-${n}">${keys.map(card).join('')}${help}</ul>
 </section>`;
 }
 
@@ -393,7 +389,7 @@ ${p.priceKeys.length > 1 ? priceSection(p.priceKeys, 'מחיר') : ''}
 ${reviewsRail()}
 ${faqSection(p.faq)}
 </article>
-${treatmentRail(p.related, 'more-h', 'עוד אצלי', { lead: false })}
+${treatmentRail(p.related, 'more-h', 'עוד אצלי')}
 ${bookingSection(p)}`;
 }
 

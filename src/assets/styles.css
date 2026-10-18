@@ -117,26 +117,20 @@ p { margin: 0; }
 .sec-head { margin-bottom: 38px; }
 .sec-head h2 { font-size: clamp(1.7rem, 7.4vw, 2.1rem); line-height: 1.15; }
 
-/* גריד הטיפולים: הראשון בגדול, והשאר בזוגות */
-.tgrid { list-style: none; margin: 0 auto; padding: 0 var(--pad); display: grid; grid-template-columns: 1fr 1fr; gap: 36px 14px; max-width: 1120px; }
-.tgrid > .tx-lead { grid-column: 1 / -1; }
-.tx-lead .titem-img { aspect-ratio: 5 / 4; }
-.tx-lead h3 { font-size: 1.7rem; }
-.tx-lead .titem-short { font-size: .95rem; }
-.trows { list-style: none; margin: 44px auto 0; }
-.trow { display: grid; grid-template-columns: 1fr auto; grid-template-areas: 'name arrow' 'short arrow'; column-gap: 16px; align-items: center; padding: 20px 0; border-top: 1px solid var(--line); text-decoration: none; }
-.trows li:last-child .trow { border-bottom: 1px solid var(--line); }
-.trow-name { grid-area: name; font: 400 1.4rem/1.2 var(--display); }
-.trow-short { grid-area: short; font-size: .88rem; color: var(--muted); }
-.trow-arrow { grid-area: arrow; font-size: 1.3rem; color: var(--bronze); transition: transform .35s var(--ease); }
-.trow:hover .trow-arrow { transform: translateX(-6px); }
-.titem { display: block; text-decoration: none; }
-.titem-img { display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--line); }
+/* גריד הטיפולים: כל הכרטיסים באותו גודל, השם על התמונה */
+.tgrid { list-style: none; margin: 0 auto; padding: 0 var(--pad); display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 1120px; }
+.titem { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: #7a6350; color: #fff; text-decoration: none; }
+.titem-img { position: absolute; inset: 0; }
 .titem-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.4s var(--ease); }
-.titem:hover .titem-img img { transform: scale(1.035); }
-.titem-body { display: grid; gap: 3px; padding-top: 16px; }
-.titem h3 { font-size: 1.2rem; line-height: 1.25; }
-.titem-short { font-size: .86rem; line-height: 1.55; color: var(--muted); }
+.titem:hover .titem-img img { transform: scale(1.04); }
+.titem::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 16, 12, 0) 42%, rgba(20, 16, 12, .74) 100%); pointer-events: none; }
+.titem-type::after { background: linear-gradient(180deg, rgba(20, 16, 12, 0) 55%, rgba(20, 16, 12, .35) 100%); }
+.titem-cta { background: var(--dark); }
+.titem-cta::after { display: none; }
+.titem-body { position: absolute; inset-inline: 0; bottom: 0; z-index: 1; display: grid; gap: 3px; padding: 16px 14px; }
+.titem h3 { font-size: 1.2rem; line-height: 1.25; color: #fff; }
+.titem-short { font-size: .86rem; line-height: 1.45; color: rgba(255, 255, 255, .86); }
+.titem-cta h3 { font-size: 1.25rem; }
 
 /* המלצות */
 .rail { list-style: none; margin: 0 auto; padding: 2px var(--pad) 10px; display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 1120px; }
@@ -272,11 +266,8 @@ p { margin: 0; }
 /* ── טאבלט ── */
 @media (min-width: 720px) {
   :root { --pad: 36px; }
-  .tgrid { grid-template-columns: repeat(3, 1fr); }
-  .tgrid > .tx-lead { grid-column: auto; }
-  .tx-lead .titem-img { aspect-ratio: 4 / 5; }
-  .tx-lead h3 { font-size: 1.2rem; }
-  .tx-lead .titem-short { font-size: .84rem; }
+  .tgrid-6 { grid-template-columns: repeat(3, 1fr); }
+  .tgrid-4 { grid-template-columns: repeat(4, 1fr); }
   .rail > li { flex-basis: 38%; }
   .rail-reviews > li { flex-basis: 28%; }
   .rail-certs > li { flex-basis: 42%; }
@@ -310,7 +301,7 @@ p { margin: 0; }
   .sec { padding-top: 104px; }
   .book { margin-top: 104px; }
   .sec-head h2 { font-size: 2.8rem; }
-  .tgrid { grid-template-columns: repeat(3, 1fr); gap: 0 24px; }
+  .tgrid { gap: 20px; }
   .intro { padding-top: 88px; }
 
   .rail { overflow: visible; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); padding-inline: var(--pad); }
