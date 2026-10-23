@@ -72,7 +72,7 @@
       days.length ? h('div', { class: 'bk-days', role: 'group', 'aria-label': 'ימים פנויים' }, days.map((d) => h('button', { type: 'button', class: 'bk-day', onclick: () => { st.date = d; st.time = ''; render(); } },
         h('small', null, fmt({ weekday: 'short' }).format(dObj(d))), h('b', null, dObj(d).getUTCDate()), h('small', null, fmt({ month: 'short' }).format(dObj(d)))))) : null,
       st.loading ? h('div', { class: 'bk-skel', role: 'status' }, h('span', { class: 'sr' }, 'טוענת שעות פנויות'), [0, 1, 2, 3, 4].map(() => h('i'))) : null,
-      !st.loading && !st.error && !days.length ? h('p', { class: 'bk-note' }, 'אין כרגע שעות פנויות. אפשר לכתוב לי בוואטסאפ ונמצא יחד זמן.') : null,
+      !st.loading && !st.error && !days.length ? h('p', { class: 'bk-note' }, 'אין כרגע שעות פנויות. אפשר לפנות אליי בוואטסאפ ונמצא מועד מתאים.') : null,
       !st.loading && canMore() && days.length ? h('button', { type: 'button', class: 'bk-more', onclick: () => loadSlots(true) }, 'עוד ימים') : null);
   }
 
@@ -96,8 +96,8 @@
     const note = h('textarea', { id: 'bk-note', name: 'note', rows: 2, maxlength: 500 });
     const trap = h('input', { name: 'website', tabindex: '-1', autocomplete: 'off', 'aria-hidden': 'true', class: 'bk-trap' });
     const btn = h('button', { class: 'btn btn-wa btn-lg', type: 'submit' }, 'שליחת בקשה');
-    const okName = () => { const ok = name.value.trim().length >= 2; nameErr.textContent = ok ? '' : 'איך לקרוא לך?'; name.toggleAttribute('aria-invalid', !ok); return ok; };
-    const okPhone = () => { const d = phone.value.replace(/\D/g, '').replace(/^972/, '0'); const ok = /^0\d{8,9}$/.test(d); phoneErr.textContent = ok ? '' : 'מספר טלפון תקין, כדי שאוכל לאשר את התור.'; phone.toggleAttribute('aria-invalid', !ok); return ok; };
+    const okName = () => { const ok = name.value.trim().length >= 2; nameErr.textContent = ok ? '' : 'נא להזין שם.'; name.toggleAttribute('aria-invalid', !ok); return ok; };
+    const okPhone = () => { const d = phone.value.replace(/\D/g, '').replace(/^972/, '0'); const ok = /^0\d{8,9}$/.test(d); phoneErr.textContent = ok ? '' : 'נא להזין מספר טלפון תקין, כדי שאוכל לאשר את התור.'; phone.toggleAttribute('aria-invalid', !ok); return ok; };
     name.addEventListener('blur', () => name.value && okName());
     phone.addEventListener('blur', () => phone.value && okPhone());
     return h('form', { class: 'bk-step', id: 'bk-form', novalidate: true, onsubmit: async (e) => {
@@ -119,7 +119,7 @@
       h('div', { class: 'fld' }, h('label', { for: 'bk-phone' }, 'טלפון'), phone, phoneErr),
       h('div', { class: 'fld' }, h('label', { for: 'bk-note' }, 'משהו שחשוב שאדע? (לא חובה)'), note),
       trap, msg, btn,
-      h('p', { class: 'small bk-fine' }, 'זו בקשה, ואני מאשרת אותה אישית בוואטסאפ. הפרטים משמשים רק לתיאום התור.'));
+      h('p', { class: 'small bk-fine' }, 'זוהי בקשת תור, ואני מאשרת אותה אישית בוואטסאפ. הפרטים משמשים לתיאום התור בלבד.'));
   }
 
   function render() {
@@ -152,7 +152,7 @@
       h('div', { class: 'bk-check', 'aria-hidden': 'true' }, '✓'),
       h('h2', null, `תודה ${first}, קיבלתי`),
       h('p', { class: 'bk-when' }, svcName(), h('br'), when),
-      h('p', null, 'התור עוד לא סופי: אני אחזור אלייך בוואטסאפ לאישור.'),
+      h('p', null, 'הבקשה התקבלה. אישור התור יישלח אלייך בוואטסאפ.'),
       h('div', { class: 'stack' },
         h('a', { class: 'btn btn-wa btn-lg', href: u.href, target: '_blank', rel: 'noopener', 'data-loc': 'booking' }, 'וואטסאפ למורן'),
         h('a', { class: 'tlink', href: icsHref(durationMin), download: 'moran-madar.ics' }, 'הוספה ליומן בטלפון'),

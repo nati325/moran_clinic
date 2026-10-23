@@ -108,7 +108,7 @@ ${hasImg(k) ? `<span class="titem-img">${picture(site.images[k], p.navLabel, { s
 </a></li>`;
   };
   const help = `<li><a class="titem titem-cta" href="${esc(waLink('היי מורן, אשמח לעזרה בבחירת טיפול'))}" target="_blank" rel="noopener" data-loc="tiles">
-<span class="titem-body"><h3>לא בטוחה מה מתאים?</h3><span class="titem-short">כתבי לי ונבחר יחד</span></span>
+<span class="titem-body"><h3>לא בטוחה איזה טיפול מתאים?</h3><span class="titem-short">נבחר יחד, בוואטסאפ</span></span>
 </a></li>`;
   const n = keys.length + 1;
   return `<section class="sec" aria-labelledby="${id}">
@@ -202,9 +202,9 @@ function bookingSection(page, closing) {
   const formEnabled = site.form.mode === 'netlify' || Boolean(site.form.action);
   return `<section class="sec book" id="booking" aria-labelledby="booking-h">
 <div class="container"><div class="book-card">
-<h2 id="booking-h">${closing ? closing.h : 'רוצה לקבוע תור?'}</h2>
-<p>${closing ? closing.p : 'כתבי לי בוואטסאפ ואחזור אלייך עם מועד.'}</p>
-<div class="stack">${waBtn(page.waText, 'booking', 'כתבי לי בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
+<h2 id="booking-h">${closing ? closing.h : 'לתיאום תור'}</h2>
+<p>${closing ? closing.p : 'אפשר לכתוב לי בוואטסאפ, ואחזור אלייך עם מועד מתאים.'}</p>
+<div class="stack">${waBtn(page.waText, 'booking', 'לתיאום בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
 <dl class="info">
 <div><dt>ימים</dt><dd>${daysText().replace('ימים ', '')}</dd></div>
 <div><dt>שעות</dt><dd>${hoursHtml()}</dd></div>
@@ -406,7 +406,7 @@ ${priceSection(p.priceKeys, 'מחירון')}
 ${reviewsRail()}
 ${faqSection(p.faq)}
 </article>
-${treatmentRail(p.related, 'more-h', 'עוד אצלי')}
+${treatmentRail(p.related, 'more-h', 'טיפולים נוספים')}
 ${bookingSection(p)}`;
 }
 
@@ -416,10 +416,10 @@ function bookMain(p) {
 <section class="bookpg container">
 <p class="kicker">קביעת תור</p>
 <h1>${p.h1}</h1>
-<p class="lead">בוחרים טיפול ומועד, ואני מאשרת בוואטסאפ.</p>
+<p class="lead">בחרי טיפול ומועד, ואני אאשר את התור בוואטסאפ.</p>
 <div id="book" data-services="${esc(JSON.stringify(svc))}" data-wa="${esc(waLink(p.waText))}"></div>
 <noscript><p class="lead">צריך JavaScript כדי לקבוע תור אונליין. אפשר לכתוב לי בוואטסאפ:</p><div class="stack">${waBtn(p.waText, 'booking', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}</div></noscript>
-<p class="small book-alt">שעווה, או שאלה לפני? <a href="${esc(waLink(p.waText))}" target="_blank" rel="noopener" data-loc="booking">כתבי לי בוואטסאפ</a></p>
+<p class="small book-alt">לשעווה או לשאלה לפני הטיפול: <a href="${esc(waLink(p.waText))}" target="_blank" rel="noopener" data-loc="booking">וואטסאפ</a></p>
 </section>`;
 }
 
@@ -427,7 +427,7 @@ function thankYouMain(p) {
   return `
 <section class="thanks container">
 <h1>${p.h1}</h1>
-<p class="lead">קיבלתי את הפרטים, ואחזור אלייך בהקדם לתיאום.</p>
+<p class="lead">הפרטים התקבלו, ואחזור אלייך בהקדם לתיאום התור.</p>
 <div class="stack">${waBtn(p.waText, 'thank_you', 'רוצה מהר יותר? וואטסאפ', 'btn btn-wa btn-lg')}${telBtn('thank_you')}</div>
 <p><a href="/">חזרה לעמוד הבית</a></p>
 </section>`;
@@ -632,7 +632,7 @@ currentPath = notFound.path;
 await write('404.html', layout(notFound, `
 <section class="thanks container">
 <h1>העמוד לא נמצא</h1>
-<p class="lead">אולי הקישור השתנה. אפשר לחזור לעמוד הבית או לכתוב לי ישירות.</p>
+<p class="lead">ייתכן שהקישור השתנה. אפשר לחזור לעמוד הבית או לפנות אליי ישירות.</p>
 <div class="stack">${waBtn(notFound.waText, 'not_found', 'קביעת תור בוואטסאפ', 'btn btn-wa btn-lg')}<a class="tlink" href="/">לעמוד הבית</a></div>
 </section>`, []));
 await write('sitemap.xml', sitemap());
