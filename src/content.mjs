@@ -229,6 +229,39 @@ export const brows = {
   related: ['waxing', 'facialTreatment', 'facialMassage'],
 };
 
+// ── ניקוז לימפתי ─────────────────────────────────────────────
+// עדיין בלי מחיר ומשך מאושרים: מחיר "לפי תיאום", ללא הזמנה אונליין (וואטסאפ בלבד)
+export const lymphatic = {
+  key: 'lymphatic',
+  path: '/lymphatic-drainage/',
+  navLabel: 'ניקוז לימפתי',
+  short: 'תמיכה בזרימת הלימפה',
+  noOnline: true,
+  title: 'ניקוז לימפתי בבית דגן | מורן מדר',
+  description: `ניקוז לימפתי לנשים בבית דגן: טכניקות עדינות לתמיכה בזרימת הלימפה ולהקלה על תחושת נפיחות, בהתאמה אישית. בקליניקה פרטית ברחוב הגליל 55. לתיאום תור: ${phone}.`,
+  h1: 'ניקוז לימפתי בבית דגן',
+  lead: 'טכניקות טיפול עדינות לתמיכה בזרימת הלימפה ולהקלה על תחושת נפיחות, בהתאם לצורך ולהתאמה האישית.',
+  waText: 'היי מורן, אשמח לקבוע ניקוז לימפתי',
+  formService: 'lymphatic',
+  bullets: [
+    'הטיפול מבוסס על תנועות עדינות ואיטיות.',
+    'ההתאמה נעשית לפי הצורך שלך ולפי האזורים שבהם את מרגישה נפיחות או כבדות.',
+    `הטיפול מתקיים בקליניקה פרטית ב${site.city}, לנשים.`,
+  ],
+  steps: [
+    'הטיפול נפתח בשיחה קצרה על הצורך ועל האזורים לטיפול.',
+    'לאחר מכן עבודה עדינה, בקצב איטי ובהתאמה אישית.',
+    'בסיום מומלץ לשתות מים ולנוח מעט.',
+  ],
+  priceKeys: ['lymphatic'],
+  faq: [
+    { q: 'למי מתאים ניקוז לימפתי?', a: 'לנשים שמרגישות נפיחות או כבדות ומעוניינות בטיפול עדין. ההתאמה נעשית באופן אישי.' },
+    { q: 'האם הטיפול כואב?', a: 'לא. זהו טיפול עדין, בתנועות איטיות וקלות.' },
+    { q: 'האם יש מצבים שבהם לא מומלץ?', a: 'במצבים רפואיים כמו דלקת פעילה, פגיעה במערכת הלימפה או טיפול אונקולוגי, מומלץ להיוועץ ברופא או ברופאה לפני הטיפול.' },
+  ],
+  related: ['facialMassage', 'massage', 'facialTreatment'],
+};
+
 export const thankYou = {
   key: 'thankYou',
   path: '/thank-you/',
@@ -249,6 +282,6 @@ export const book = {
   noindex: true,
 };
 
-export const servicePages = [massage, facialMassage, facialTreatment, waxing, brows];
+export const servicePages = [massage, facialMassage, facialTreatment, lymphatic, waxing, brows];
 export const allPages = [home, ...servicePages, book, thankYou];
 export const byKey = Object.fromEntries(allPages.map((p) => [p.key, p]));

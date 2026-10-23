@@ -72,7 +72,7 @@ const bookHref = () => {
   return site.bookingUrl + (BOOKABLE[key] && !/^https?:/.test(site.bookingUrl) ? `?s=${key}` : '');
 };
 const bookLink = (loc, cls = 'tlink', label = 'קביעת תור אונליין') =>
-  site.bookingUrl ? `<a class="${cls}" href="${esc(bookHref())}"${/^https?:/.test(site.bookingUrl) ? ' target="_blank" rel="noopener"' : ''} data-loc="${loc}" data-booking>${label}</a>` : '';
+  site.bookingUrl && !allPages.find((p) => p.path === currentPath)?.noOnline ? `<a class="${cls}" href="${esc(bookHref())}"${/^https?:/.test(site.bookingUrl) ? ' target="_blank" rel="noopener"' : ''} data-loc="${loc}" data-booking>${label}</a>` : '';
 
 const telBtn = (loc, cls = 'btn btn-soft') =>
   `<a class="${cls}" href="${telLink}" data-loc="${loc}">${icon.phone}<span dir="ltr">${site.phoneDisplay}</span></a>`;
@@ -192,6 +192,7 @@ function bookingSection(page, closing) {
     ['massage_cupping', 'עיסוי עם כוסות רוח'],
     ['facialMassage', 'עיסוי פנים / לפטינג'],
     ['facialTreatment', 'טיפול פנים'],
+    ['lymphatic', 'ניקוז לימפתי'],
     ['waxing', 'הסרת שיער בשעווה'],
     ['brows', 'עיצוב גבות'],
     ['unsure', 'עוד לא בטוחה'],
@@ -359,7 +360,7 @@ ${aboutSection(p.about)}
 ${secHead('tx-h', p.treatmentsHeading)}
 <ul class="types container">${p.treatments.map((t) => `<li class="type"><h3>${t.h}</h3><p>${t.p}</p></li>`).join('')}</ul>
 </section>
-${treatmentRail(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'brows'], 'treatments-h', 'לעמודי הטיפולים')}
+${treatmentRail(['massage', 'facialMassage', 'facialTreatment', 'lymphatic', 'waxing', 'brows'], 'treatments-h', 'לעמודי הטיפולים')}
 <section class="sec sec-narrow" aria-labelledby="why-h">
 ${secHead('why-h', p.whyHeading)}
 <ul class="why container">${p.why.map((w) => `<li>${w}</li>`).join('')}</ul>

@@ -113,6 +113,7 @@ export const site = {
     },
     // עד שיהיה צילום טוב: השירות מוצג בטיפוגרפיה בלבד
     waxing: { none: true },
+    lymphatic: { none: true },
     brows: { none: true },
   },
 };
@@ -148,6 +149,7 @@ export const services = {
     priceLabel: 'לפי אזור',
     path: '/waxing/',
   },
+  lymphatic: { name: 'ניקוז לימפתי', showDuration: false, priceLabel: 'לפי תיאום', path: '/lymphatic-drainage/' }, // מחיר ומשך: לאשר עם מורן
   // showDuration: false = לא מציגים את משך הטיפול באתר (נשאר לשימוש האפליקציה והיומן)
   brows: { name: 'עיצוב גבות + שפם', duration: 20, showDuration: false, price: 100, path: '/eyebrows/' },
 };
