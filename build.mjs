@@ -162,7 +162,7 @@ ${secHead('faq-h', 'שאלות נפוצות')}
 </section>`;
 }
 
-function aboutSection() {
+function aboutSection(about) {
   const certs = site.certificates
     .map(
       (c) => `<li><a class="cert" href="/assets/img/${c.img}-${c.size[0]}.webp" target="_blank" rel="noopener">
@@ -174,9 +174,8 @@ function aboutSection() {
 <div class="container about-card">
 ${picture(site.images.therapist, 'מורן בעבודה', { cls: 'about-img', sizes: '(min-width: 1000px) 320px, 40vw' })}
 <div class="about-text">
-<p class="kicker">קצת עליי</p>
-<h2 id="about-h">${site.therapistName}</h2>
-<p>אני מורן, קוסמטיקאית ומעסה. אני מקבלת נשים בקליניקה הפרטית שלי ב${site.city}, ומתאימה כל טיפול למה שאת צריכה היום.</p>
+<h2 id="about-h">${about.h}</h2>
+${about.paras.map((t) => `<p>${t}</p>`).join('\n')}
 ${site.massageTraining ? `<p class="small">${site.massageTraining}</p>` : ''}
 </div>
 </div>
@@ -187,7 +186,7 @@ ${site.massageTraining ? `<p class="small">${site.massageTraining}</p>` : ''}
 </section>`;
 }
 
-function bookingSection(page) {
+function bookingSection(page, closing) {
   const opts = [
     ['massage', 'עיסוי גוף'],
     ['massage_cupping', 'עיסוי עם כוסות רוח'],
@@ -203,14 +202,15 @@ function bookingSection(page) {
   const formEnabled = site.form.mode === 'netlify' || Boolean(site.form.action);
   return `<section class="sec book" id="booking" aria-labelledby="booking-h">
 <div class="container"><div class="book-card">
-<h2 id="booking-h">רוצה לקבוע תור?</h2>
-<p>כתבי לי בוואטסאפ ואחזור אלייך עם מועד.</p>
+<h2 id="booking-h">${closing ? closing.h : 'רוצה לקבוע תור?'}</h2>
+<p>${closing ? closing.p : 'כתבי לי בוואטסאפ ואחזור אלייך עם מועד.'}</p>
 <div class="stack">${waBtn(page.waText, 'booking', 'כתבי לי בוואטסאפ', 'btn btn-wa btn-lg')}${bookLink('booking_online', 'btn btn-line-light btn-lg')}<a class="tlink" href="${telLink}" data-loc="booking">או בטלפון <span dir="ltr">${site.phoneDisplay}</span></a></div>
 <dl class="info">
 <div><dt>ימים</dt><dd>${daysText().replace('ימים ', '')}</dd></div>
 <div><dt>שעות</dt><dd>${hoursHtml()}</dd></div>
 <div><dt>כתובת</dt><dd>${fullAddress()}</dd></div>
 </dl>
+${closing ? `<p class="sign">${closing.sign}</p>` : ''}
 <div class="nav-to"><a href="${esc(wazeUrl)}" target="_blank" rel="noopener" data-loc="waze">Waze</a><a href="${esc(mapsUrl)}" target="_blank" rel="noopener" data-loc="maps">Google Maps</a></div>
 ${formEnabled ? `<details class="form-wrap">
 <summary>או השאירי פרטים ונחזור אלייך</summary>
@@ -346,19 +346,28 @@ function homeMain(p) {
 ${picture(h, 'מורן בקליניקה', { cls: 'hero-poster', eager: true, sizes: '(min-width: 1000px) 420px, 100vw' })}
 </div>
 <div class="hero-body container">
-<h1 id="hero-h">עיסוי וקוסמטיקה<br>בבית דגן</h1>
-<div class="stack">${waBtn(p.waText, 'hero', 'קביעת תור בוואטסאפ', 'btn btn-light btn-lg')}${bookLink('hero_online') || '<a class="tlink" href="#prices">למחירון</a>'}</div>
+<h1 id="hero-h">${p.tagline.join('<br>')}</h1>
+<p class="hero-sub">${p.subtitle}</p>
+<div class="stack">${waBtn(p.waText, 'hero', p.cta, 'btn btn-light btn-lg')}${bookLink('hero_online') || '<a class="tlink" href="#prices">למחירון</a>'}</div>
 </div>
 </section>
 
-<section class="intro container"><p>${p.intro}</p></section>
+<section class="intro intro-long container"><p>${p.intro}</p></section>
 
-${treatmentRail(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'brows'])}
+${aboutSection(p.about)}
+<section class="sec sec-narrow" aria-labelledby="tx-h">
+${secHead('tx-h', p.treatmentsHeading)}
+<ul class="types container">${p.treatments.map((t) => `<li class="type"><h3>${t.h}</h3><p>${t.p}</p></li>`).join('')}</ul>
+</section>
+${treatmentRail(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'brows'], 'treatments-h', 'לעמודי הטיפולים')}
+<section class="sec sec-narrow" aria-labelledby="why-h">
+${secHead('why-h', p.whyHeading)}
+<ul class="why container">${p.why.map((w) => `<li>${w}</li>`).join('')}</ul>
+</section>
 ${reviewsRail()}
-${aboutSection()}
 ${priceSection(['massage', 'facialMassage', 'facialTreatment', 'waxing', 'waxingParts', 'brows'])}
 ${faqSection(p.faq)}
-${bookingSection(p)}`;
+${bookingSection(p, p.closing)}`;
 }
 
 function serviceMain(p) {
